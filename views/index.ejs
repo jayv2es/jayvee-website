@@ -231,11 +231,13 @@
                                 });
 
                                 // EXPLORE ANIMATIONS
+                                const initialFontWeight = parseInt($(".exploreText").css("font-weight"));
+                                const initialStrokeWidth = parseInt($(".exploreArrowPolygon").css("stroke-width"));
                                 $('#explore').mouseenter(() => {
-                                    window.hoverExplore(250, colors, reverseFlag=false);
+                                    window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=false);
                                 });
                                 $('#explore').mouseleave(() => {
-                                    window.hoverExplore(250, colors, reverseFlag=true);
+                                    window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=true);
                                 });
 
                                 // OPTION BOXES ANIMATIONS
