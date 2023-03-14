@@ -540,6 +540,7 @@ function hoverExplore(
     var diffFontWeight =
       parseInt($(".exploreText").css("font-weight")) - initialFontWeight;
     var currRightShift = parseInt($(".explore").css("right"));
+    console.log(currRightShift);
     $(".explore").css("cursor", "default");
     $(".explore").animate(
       {
