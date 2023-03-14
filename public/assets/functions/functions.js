@@ -490,21 +490,26 @@ function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
   }
 }
 
-function hoverExplore(
-  animTime,
-  colorScheme,
-  initialFontWeight,
-  initialStrokeWidth,
-  reverseFlag = false
-) {
+function hoverExplore(animTime, colorScheme, initialFontWeight, initialStrokeWidth, reverseFlag = false) {
+  /*  
+    Params:   animTime:             Duration of animation
+              colorScheme:          The in EJS selected/generated color scheme
+              initialFontWeight:    Current font-weight (const), extracted in EJS code before calling the function.
+              initialStrokeWidth:   Current stroke-width (const), extracted in EJS code before calling the function.
+    Flags:    reverse:              If true, plays animation backwords (i.e. when mouseleave)
+    Action:   Moves "START TOUR" button 1vh to the right and displays bold and clickable, reverses if flag true.
+    Returns:  - 
+  */
+  $(":animated").stop(true);
   if (!reverseFlag) {
-    if (parseInt($(".exploreText").css("font-weight")) > initialFontWeight) {
-      return;
-    }
+    // Get difference in stroke-width and font-weight to subtract
+    var diffStrokeWidth = initialStrokeWidth + 50 - parseInt($(".exploreArrowPolygon").css("stroke-width"));
+    var diffFontWeight = initialFontWeight + 300 - parseInt($(".exploreText").css("font-weight"));
+    var diffRightShift = parseInt(window.innerWidth/100) - parseInt($(".explore").css("right"));
     $(".explore").css("cursor", "pointer");
     $(".explore").animate(
       {
-        right: "-=1vw",
+        right: `-=${diffRightShift}`,
       },
       {
         duration: animTime,
@@ -514,7 +519,7 @@ function hoverExplore(
     );
     $(".exploreArrowPolygon").animate(
       {
-        "stroke-width": "+=50",
+        "stroke-width": `+=${diffStrokeWidth}`,
       },
       {
         duration: animTime,
@@ -524,7 +529,7 @@ function hoverExplore(
     );
     $(".exploreText").animate(
       {
-        "font-weight": "+=300",
+        "font-weight": `+=${diffFontWeight}`,
       },
       {
         duration: animTime,
@@ -534,13 +539,9 @@ function hoverExplore(
     );
   } else {
     // Get difference in stroke-width and font-weight to subtract
-    var diffStrokeWidth =
-      parseInt($(".exploreArrowPolygon").css("stroke-width")) -
-      initialStrokeWidth;
-    var diffFontWeight =
-      parseInt($(".exploreText").css("font-weight")) - initialFontWeight;
+    var diffStrokeWidth = parseInt($(".exploreArrowPolygon").css("stroke-width")) - initialStrokeWidth;
+    var diffFontWeight = parseInt($(".exploreText").css("font-weight")) - initialFontWeight;
     var currRightShift = parseInt($(".explore").css("right"));
-    console.log(currRightShift);
     $(".explore").css("cursor", "default");
     $(".explore").animate(
       {
@@ -575,13 +576,7 @@ function hoverExplore(
   }
 }
 
-function clickThemeChange(
-  element,
-  animTime,
-  colorsJSON,
-  colorTheme,
-  initialFlexBasis
-) {
+function clickThemeChange(element, animTime, colorsJSON, colorTheme, initialFlexBasis) {
   /*
   Params:   element:          jQuery-object of the selection box' div, e.g. "$('#selectionDiv')".
                               IMPORTANT: HTML of element needs to be structured like:
