@@ -1,0 +1,224 @@
+/*
+CONTAINS STYLES OF index.ejs
+--------------------------------------------------------
+--------------------------------------------------------
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap');
+
+/* --------------------------------------------------------
+---------------------- INIT AND GRID ---------------------- 
+-------------------------------------------------------- */
+
+html,body {
+    background-size: auto 100vw;
+    overflow: hidden;
+    margin: 0;
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: larger;
+}
+
+/* MOBILE VERSION WITH ROTATING PEN INSTEAD OF SLIDING */
+
+.grid-container{
+    height: 100vh;
+    display: grid;
+    /* FALLBACK VALUE (not all browsers support min) */
+    grid-template-columns: repeat(9, 1.389vw 9.56778vw) 1.389vw;
+    grid-template-rows: repeat(10, 1.852vh 7.9628vh) 1.852vh; 
+    /* TO-BE-USED VALUE (overwriting the fallback) */
+    grid-template-columns: repeat(9, max(1.389vw, 10px) 9.56778vw) max(1.389vw, 10px);
+    grid-template-rows: repeat(10, max(1.852vh, 10px) 7.9628vh) max(1.852vh, 10px); 
+}
+
+
+/* --------------------------------------------------------
+--------------------- LOADINGSCREEN ----------------------- 
+-------------------------------------------------------- */
+
+.loadingscreen {
+    grid-row: 10/13;
+    grid-column: 4/17;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    line-height: 100%;
+    font-size: 900%;
+    font-weight: 800;
+}
+
+
+
+
+/* --------------------------------------------------------
+---------------- 1ST HIERARCHY GRIDPLACES ----------------- 
+-------------------------------------------------------- */
+
+div.title {
+    grid-row: 2/3;
+    grid-column: 4/9;
+    height: 100%;
+    position: relative;
+    transform: translateY(40%);
+}
+
+div.butSocials {
+    grid-row: 2/3;
+    grid-column: 12/17;
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    transform: translateY(50%);
+}
+
+div.butOptions {
+    grid-row: 4/5;
+    grid-column: 12/17;
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+div.logo {
+    grid-row: 8/15;
+    grid-column: 4/17;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    left: 0;    /*Start value; Animated in hoverMenupoint*/
+}
+
+div.menu {
+    grid-row: 18/19;
+    grid-column: 4/17;
+    position: relative;
+    /* Following two lines needed to have same whitespaces between each title*/
+    display: flex;
+    justify-content: space-between;
+}
+
+div.explore {
+    grid-row: 10/13;
+    grid-column: 16/17;
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+    right: 1vw;
+}
+
+/* --------------------------------------------------------
+------------------- TITLE AND SUBTITLE -------------------- 
+-------------------------------------------------------- */
+
+.h1title {
+    font-weight: 800;
+    line-height: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+    font-size: 50px;
+}
+
+.pintro {
+    font-weight: 300;
+    font-size: smaller;
+    line-height: 130%;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+/* --------------------------------------------------------
+-------------------------- LOGO --------------------------- 
+-------------------------------------------------------- */
+
+.logo-svg {
+    height: 100%;
+    z-index: 2;
+}
+
+div.movingbar-container {
+    grid-row: 14/15;
+    grid-column: 1/20;
+    position: relative;
+    z-index: 1;
+}
+
+div.movingbar {
+    height: 38.3%;
+    bottom: 0;
+    position: absolute;
+    border-radius: 3.2vh;
+    width: 100vw;
+    transform: translateX(-50vw);
+
+    left: -2vw; /*Start value; Animated in moveLogoToMenupoint*/
+}
+
+/* --------------------------------------------------------
+------------------- SOCIALS + OPTIONS  -------------------- 
+-------------------------------------------------------- */
+
+.butSocial, .butOption {
+    flex-basis: 3.5vh;
+    height: 3.5vh;
+    min-height: 20px;
+    min-width: 20px;
+    margin-left: 2vh;
+    border: 0.3vh solid;
+    float: right;
+}
+
+.bS3, .bO6 {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.butOptionIcon {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --------------------------------------------------------
+--------------------- EXPLORE ARROW  ---------------------- 
+-------------------------------------------------------- */
+
+.exploreArrowDiv {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.exploreArrow {
+    height: 75%;
+    z-index: 2;
+}
+
+.exploreTextDiv {
+    transform: translateY(50%);
+    height: 50%;
+    width: 80%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.exploreText {
+    position: relative;
+    text-align: right;
+    line-height: 95%;
+    font-weight: 300;
+    font-size: larger;
+}

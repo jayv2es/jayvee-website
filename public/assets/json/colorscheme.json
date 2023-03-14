@@ -1,0 +1,39 @@
+{
+    
+    "Light": {
+        "BackgroundColor": "[255,255,255]",
+        "ContentColor": "[0,0,0]",
+        "FirstColor": "[50,0,100]",
+        "SecondColor": "[0,50,30]",
+        "ThirdColor": "[200,20,100]",
+        "FourthColor": "[100,100,100]"
+    },
+
+    "Dark": {
+        "BackgroundColor": "[0,0,0]",
+        "ContentColor": "[255,255,255]",
+        "FirstColor": "[50,0,100]",
+        "SecondColor": "[0,50,30]",
+        "ThirdColor": "[200,20,100]",
+        "FourthColor": "[100,100,100]"
+    },
+
+    "Arctic": {
+        "BackgroundColor": "[151,209,230]",
+        "ContentColor": "[255,255,255]",
+        "FirstColor": "[16,75,97]",
+        "SecondColor": "[16,75,97]",
+        "ThirdColor": "[16,75,97]",
+        "FourthColor": "[16,75,97]"
+    },
+
+    "Caribbean": {
+        "BackgroundColor": "[95,152,158]",
+        "ContentColor": "[242,218,189]",
+        "FirstColor": "[53,87,2]",
+        "SecondColor": "[82,110,5]",
+        "ThirdColor": "[130,140,50]",
+        "FourthColor": "[186,219,43]"
+    }
+    
+}
