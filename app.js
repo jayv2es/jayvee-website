@@ -20,6 +20,7 @@ const ejs = require('ejs')
 const assert = require('assert')
 const { vary } = require('express/lib/response');
 var app = module.exports = express();
+const mongoose = require('mongoose');
 
 // Config env variables for development (in production, vars are set in host, e.g. Heroku)
 if(process.env.NODE_ENV !== 'production') {
