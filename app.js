@@ -53,6 +53,25 @@ app.use('/public', express.static('public'));
 // Set ejs as viewing engine
 app.set('view engine', 'ejs');
 
+/* -------------------------------------------------------------------------------
+ --------------------------- INITIALIZE MONGO DATABASE ---------------------------
+ ------------------------------------------------------------------------------- */
+
+ // Set up default mongoose connection on localhost
+ var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
+ mongoose.connect(mongoDB, {
+     useNewUrlParser: true,
+     useUnifiedTopology: true
+ });
+ 
+ // Get default connection
+ var db = mongoose.connection;
+
+ //Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// Load structure Schema
+const structure = require('models/structure.js');
 
 
 /* -------------------------------------------------------------------------------
