@@ -47,6 +47,8 @@ app.use(compression());
 // Serve static files
 app.use(express.static('views'));
 app.use(express.static('routes'));
+app.use(express.static('models'));
+app.use(express.static('helpers'));
 app.use(express.static('node_modules'));
 app.use('/public', express.static('public'));
 
@@ -59,6 +61,7 @@ app.set('view engine', 'ejs');
 
  // Set up default mongoose connection on localhost
  var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
+ console.log(mongoDB);
  mongoose.connect(mongoDB, {
      useNewUrlParser: true,
      useUnifiedTopology: true

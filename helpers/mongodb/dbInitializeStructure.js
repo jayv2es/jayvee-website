@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const fs = require('fs')
-const structure = require('../../public/assets/models/structure.js')
-dotenv.config()
+const structure = require('../../models/structure.js')
+dotenv.config();
 
 // Set up default mongoose connection on localhost
-var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
+var mongoDB = "mongodb+srv://joelvonarburg:aKjZhzwhDt2HHBEc@jvwebsitecluster.i40poy2.mongodb.net/jayvee-website?retryWrites=true&w=majority";
 mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -20,19 +20,19 @@ const createStructure = async () => {
         "indexTitle": "HI THERE!",
         "indexIntro": "Welcome to my personal website! Feel free to explore my work or to get to know me better on my profile page. Peace!",
         "indexMenu": [{
-            "divisonTitle": "PROFILE",
+            "divisionTitle": "PROFILE",
             "divisionIntro": "",
             "divisionMenu": []
         },{
-            "divisonTitle": "STUDIES",
+            "divisionTitle": "STUDIES",
             "divisionIntro": "",
             "divisionMenu": []
         },{
-            "divisonTitle": "CREATIVE",
+            "divisionTitle": "CREATIVE",
             "divisionIntro": "",
             "divisionMenu": []
         },{
-            "divisonTitle": "CONTACT",
+            "divisionTitle": "CONTACT",
             "divisionIntro": "",
             "divisionMenu": []
         }]
