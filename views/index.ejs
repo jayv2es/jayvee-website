@@ -19,12 +19,10 @@
             </div>
             <div class="title">
                 <div class="h1title">
-                    HI THERE!
+                    <%= structureData[0].indexTitle %>
                 </div>
                 <div class="pintro">
-                    Welcome to my personal website! Feel free to
-                    explore my work or to get to know me better
-                    on my profile page. Peace!
+                    <%= structureData[0].indexIntro %>
                 </div>
             </div>
             <div class="butSocials">
@@ -138,7 +136,7 @@
             </div>
             <div class="menu">
                 <h2 class="h2menu m0" id="h2menu0">
-                    PROFILE
+                    <%= structureData[0].indexIntro %>
                 </h2>
                 <h2 class="h2menu m1" id="h2menu1">
                     STUDIES
@@ -175,6 +173,7 @@
             $(document).ready(() => {
                 // Load color scheme
                 var colors;
+                console.log();
                 $.getJSON('/public/assets/json/colorscheme.json', colorsJSON => {
                     colors = window.loadColorTheme(colorsJSON, "Light");
                     window.initializeCSSColorTheme(colors);

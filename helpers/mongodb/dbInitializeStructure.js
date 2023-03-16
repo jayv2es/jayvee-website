@@ -5,7 +5,7 @@ const structure = require('../../models/structure.js')
 dotenv.config();
 
 // Set up default mongoose connection on localhost
-var mongoDB = "mongodb+srv://joelvonarburg:aKjZhzwhDt2HHBEc@jvwebsitecluster.i40poy2.mongodb.net/jayvee-website?retryWrites=true&w=majority";
+var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
 mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true

@@ -74,7 +74,7 @@ app.set('view engine', 'ejs');
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // Load structure Schema
-const structure = require('models/structure.js');
+const structure = require('./models/structure.js');
 
 
 /* -------------------------------------------------------------------------------
@@ -82,8 +82,12 @@ const structure = require('models/structure.js');
  ------------------------------------------------------------------------------- */
 
 // Seperate case for landing page GET-req
-app.get('/', (req,res) => {
-    res.render('index');
+app.get('/', async (req,res) => {
+    req.session.structureData = await structure.find({});
+    console.log(req.session.structureData);
+    res.render('index', {
+        structureData: req.session.structureData
+    });
 })
 
 // Import all routes from the routes-folder (don't forget to export from the corresp. route files)
