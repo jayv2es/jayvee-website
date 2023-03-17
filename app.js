@@ -83,7 +83,7 @@ const structure = require('./models/structure.js');
 
 // Seperate case for landing page GET-req
 app.get('/', async (req,res) => {
-    req.session.structureData = await structure.find({});
+    req.session.structureData = await structure.find({}).maxTimeMS(20000);
     console.log(req.session.structureData);
     res.render('index', {
         structureData: req.session.structureData
