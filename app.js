@@ -47,6 +47,8 @@ app.use(compression());
 // Serve static files
 app.use(express.static('views'));
 app.use(express.static('routes'));
+app.use(express.static('models'));
+app.use(express.static('helpers'));
 app.use(express.static('node_modules'));
 app.use('/public', express.static('public'));
 
@@ -59,6 +61,7 @@ app.set('view engine', 'ejs');
 
  // Set up default mongoose connection on localhost
  var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
+ console.log(mongoDB);
  mongoose.connect(mongoDB, {
      useNewUrlParser: true,
      useUnifiedTopology: true
@@ -71,7 +74,7 @@ app.set('view engine', 'ejs');
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // Load structure Schema
-const structure = require('models/structure.js');
+const structure = require('./models/structure.js');
 
 
 /* -------------------------------------------------------------------------------
@@ -79,8 +82,12 @@ const structure = require('models/structure.js');
  ------------------------------------------------------------------------------- */
 
 // Seperate case for landing page GET-req
-app.get('/', (req,res) => {
-    res.render('index');
+app.get('/', async (req,res) => {
+    req.session.structureData = await structure.find({});
+    console.log(req.session.structureData);
+    res.render('index', {
+        structureData: req.session.structureData
+    });
 })
 
 // Import all routes from the routes-folder (don't forget to export from the corresp. route files)
