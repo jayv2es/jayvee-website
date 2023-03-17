@@ -64,6 +64,7 @@ app.set("view engine", "ejs");
 
 // Set up default mongoose connection on localhost
 var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
+console.log(mongoDB);
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -78,6 +79,13 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // Load structure Schema
 const structure = require("./models/structure.js");
+const colors = require("./models/colors.js");
+
+/* -------------------------------------------------------------------------------
+ ----------------------- UPDATE COLOR SCHEMES JSON FROM DB -----------------------
+ ------------------------------------------------------------------------------- */
+
+
 
 /* -------------------------------------------------------------------------------
  ------------------------------------ ROUTING ------------------------------------
@@ -86,7 +94,6 @@ const structure = require("./models/structure.js");
 // Seperate case for landing page GET-req
 app.get("/", async (req, res) => {
   req.session.structureData = await structure.find({});
-  req.session.colorsData = await colors.find({});
   console.log(req.session.structureData);
   res.render("index", {
     structureData: req.session.structureData,
