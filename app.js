@@ -68,7 +68,7 @@ console.log(mongoDB);
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  authSource: "admin"
+  authSource: "admin",
 });
 
 // Get default connection
