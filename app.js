@@ -64,7 +64,6 @@ app.set("view engine", "ejs");
 
 // Set up default mongoose connection on localhost
 var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
-console.log(mongoDB);
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -82,22 +81,21 @@ const structure = require("./models/structure.js");
 const colors = require("./models/colors.js");
 
 /* -------------------------------------------------------------------------------
- ----------------------- UPDATE COLOR SCHEMES JSON FROM DB -----------------------
- ------------------------------------------------------------------------------- */
-
-
-
-/* -------------------------------------------------------------------------------
  ------------------------------------ ROUTING ------------------------------------
  ------------------------------------------------------------------------------- */
 
 // Seperate case for landing page GET-req
 app.get("/", async (req, res) => {
+  // Load color scheme from Mongo DB
+  const colorsData = await colors.find({});
+  const colorsJSON = JSON.stringify(colorsData);
+  console.log(colorsJSON);
+  // Save to colorscheme.json
+  fs.writeFileSync("./public/assets/json/colorscheme.json", colorsJSON);
+  // Initialize website content/structure from DB and render index  
   req.session.structureData = await structure.find({});
-  console.log(req.session.structureData);
   res.render("index", {
-    structureData: req.session.structureData,
-    colorsData: req.session.colorsData
+    structureData: req.session.structureData
   });
 });
 

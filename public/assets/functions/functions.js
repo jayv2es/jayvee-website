@@ -51,10 +51,14 @@ function getCookie(cname) {
 function loadColorTheme(colorsJSON, theme) {
   // colorsJSON needs to be in a data format, i.e. loaded using "getJSON" and called in the callback function of "getJSON"
   // theme (string) describing the position of the theme (e.g. "Default") as indicated in colorscheme.json
-  var colorThemeArr = Object.values(colorsJSON[theme]); // To access the JSON as array
-  var colorScheme = new Array(colorThemeArr.length);
-  for (var i = 0; i < colorThemeArr.length; i++) {
-    colorScheme[i] = JSON.parse(colorThemeArr[i]); // Store RGB for each color
+  var thisThemeIndex = colorsJSON.findIndex((lookedUpTheme) => lookedUpTheme.themeName === theme);
+  var thisTheme = colorsJSON[thisThemeIndex];
+  // Define an empty array to store RGB values
+  var thisThemeArr = Object.values(thisTheme).slice(2,Object.values(thisTheme).length-1); // Exclude first 2 and last from MongoDB
+  var colorScheme = new Array(thisThemeArr.length);
+  // For each position in the array, store the corresponding RGB values
+  for (var i = 0; i < thisThemeArr.length; i++) {
+    colorScheme[i] = [thisThemeArr[i].red, thisThemeArr[i].blue, thisThemeArr[i].green];
   }
   return colorScheme;
 }
