@@ -62,20 +62,6 @@ app.set("view engine", "ejs");
  --------------------------- INITIALIZE MONGO DATABASE ---------------------------
  ------------------------------------------------------------------------------- */
 
-// Set up default mongoose connection on localhost
-var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  authSource: "admin",
-});
-
-// Get default connection
-var db = mongoose.connection;
-
-//Bind connection to error event (to get notification of connection errors)
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
 // Load structure Schema
 const structure = require("./models/structure.js");
 const colors = require("./models/colors.js");
@@ -86,16 +72,39 @@ const colors = require("./models/colors.js");
 
 // Seperate case for landing page GET-req
 app.get("/", async (req, res) => {
-  // Load color scheme from Mongo DB
-  const colorsData = await colors.find({});
-  const colorsJSON = JSON.stringify(colorsData);
-  console.log(colorsJSON);
-  // Save to colorscheme.json
-  fs.writeFileSync("./public/assets/json/colorscheme.json", colorsJSON);
-  // Initialize website content/structure from DB and render index  
-  req.session.structureData = await structure.find({});
+  
+  
+  // ---------------------------------------------------------------------
+  // ------------------ SET TO TRUE IF WORKING REMOTELY ------------------
+  // ---------------------------------------------------------------------
+  const workingRemotely = true;
+  // REMOVE THE IF-ELSE CLAUSE IF NO MORE WORKING FROM REMOTE NEEDED
+  // Needed to work from CodeSandbox (since otherwise MongoDB times out)  
+  
+  if (!workingRemotely) {
+    // Set up default mongoose connection on localhost
+    var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
+    mongoose.connect(mongoDB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      authSource: "admin",
+    });
+    // Get default connection
+    var db = mongoose.connection;
+    //Bind connection to error event (to get notification of connection errors)
+    db.on("error", console.error.bind(console, "MongoDB connection error:"));
+    req.session.structureData = await structure.find({});
+    const colorsData = await colors.find({});
+    const colorsJSON = JSON.stringify(colorsData);
+    fs.writeFileSync("./public/assets/json/colorscheme.json", colorsJSON);
+  } else {
+    // Assuming colors data stored in colorscheme.json and structure data in structure.JSON
+    // NOTE: structure.json can be deleted after finishing working remotely, colorscheme.json not!
+    req.session.structureData = JSON.parse(fs.readFileSync("./public/assets/json/structure.json"));
+  }
+  
   res.render("index", {
-    structureData: req.session.structureData
+    structureData: req.session.structureData,
   });
 });
 
