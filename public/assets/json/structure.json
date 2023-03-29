@@ -1,0 +1,33 @@
+[
+  {
+    "_id": "641379425ecf18da4b60da94",
+    "indexTitle": "HI THERE!",
+    "indexIntro": "Welcome to my personal website! Feel free to explore my work or to get to know me better on my profile page. Peace!",
+    "indexMenu": [
+      {
+        "divisionTitle": "PROFILE",
+        "divisionIntro": " ",
+        "divisionMenu": [],
+        "_id": "641379425ecf18da4b60da95"
+      },
+      {
+        "divisionTitle": "STUDIES",
+        "divisionIntro": " ",
+        "divisionMenu": [],
+        "_id": "641379425ecf18da4b60da96"
+      },
+      {
+        "divisionTitle": "CREATIVE",
+        "divisionIntro": " ",
+        "divisionMenu": [],
+        "_id": "641379425ecf18da4b60da97"
+      },
+      {
+        "divisionTitle": "CONTACT",
+        "divisionIntro": " ",
+        "divisionMenu": [],
+        "_id": "641379425ecf18da4b60da98"
+      }
+    ]
+  }
+]

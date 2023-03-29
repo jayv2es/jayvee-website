@@ -51,14 +51,23 @@ function getCookie(cname) {
 function loadColorTheme(colorsJSON, theme) {
   // colorsJSON needs to be in a data format, i.e. loaded using "getJSON" and called in the callback function of "getJSON"
   // theme (string) describing the position of the theme (e.g. "Default") as indicated in colorscheme.json
-  var thisThemeIndex = colorsJSON.findIndex((lookedUpTheme) => lookedUpTheme.themeName === theme);
+  var thisThemeIndex = colorsJSON.findIndex(
+    (lookedUpTheme) => lookedUpTheme.themeName === theme
+  );
   var thisTheme = colorsJSON[thisThemeIndex];
   // Define an empty array to store RGB values
-  var thisThemeArr = Object.values(thisTheme).slice(2,Object.values(thisTheme).length-1); // Exclude first 2 and last from MongoDB
+  var thisThemeArr = Object.values(thisTheme).slice(
+    2,
+    Object.values(thisTheme).length - 1
+  ); // Exclude first 2 and last from MongoDB
   var colorScheme = new Array(thisThemeArr.length);
   // For each position in the array, store the corresponding RGB values
   for (var i = 0; i < thisThemeArr.length; i++) {
-    colorScheme[i] = [thisThemeArr[i].red, thisThemeArr[i].blue, thisThemeArr[i].green];
+    colorScheme[i] = [
+      thisThemeArr[i].red,
+      thisThemeArr[i].blue,
+      thisThemeArr[i].green,
+    ];
   }
   return colorScheme;
 }
@@ -180,8 +189,6 @@ function linearlyChangeRGB(rgbEnd, animTime) {
     );
   }, millisecsInterval);
 }
-
-
 
 /* -------------------------------------------------------------------------------
 --------------------------- SELECTION BOX FUNCTIONS ------------------------------
@@ -496,7 +503,13 @@ function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
   }
 }
 
-function hoverExplore(animTime, colorScheme, initialFontWeight, initialStrokeWidth, reverseFlag = false) {
+function hoverExplore(
+  animTime,
+  colorScheme,
+  initialFontWeight,
+  initialStrokeWidth,
+  reverseFlag = false
+) {
   /*  
     Params:   animTime:             Duration of animation
               colorScheme:          The in EJS selected/generated color scheme
@@ -506,12 +519,15 @@ function hoverExplore(animTime, colorScheme, initialFontWeight, initialStrokeWid
     Action:   Moves "START TOUR" button 1vh to the right and displays bold and clickable, reverses if flag true.
     Returns:  - 
   */
-  $(".explore :animated").stop(true);
+  $("#explore :animated").stop(true);
   if (!reverseFlag) {
     // Get difference in stroke-width and font-weight to subtract
-    var diffStrokeWidth = initialStrokeWidth + 50 - parseInt($(".exploreArrowPolygon").css("stroke-width"));
+    var diffStrokeWidth =
+      initialStrokeWidth +
+      50 -
+      parseInt($(".exploreArrowPolygon").css("stroke-width"));
     var diffFontWeight = initialFontWeight + 300 - parseInt($(".exploreText").css("font-weight"));
-    var diffRightShift = parseInt(window.innerWidth/100) - parseInt($(".explore").css("right"));
+    var diffRightShift = parseInt(window.innerWidth / 100) - parseInt($(".explore").css("right"));
     $(".explore").css("cursor", "pointer");
     $(".explore").animate(
       {
@@ -545,8 +561,11 @@ function hoverExplore(animTime, colorScheme, initialFontWeight, initialStrokeWid
     );
   } else {
     // Get difference in stroke-width and font-weight to subtract
-    var diffStrokeWidth = parseInt($(".exploreArrowPolygon").css("stroke-width")) - initialStrokeWidth;
-    var diffFontWeight = parseInt($(".exploreText").css("font-weight")) - initialFontWeight;
+    var diffStrokeWidth =
+      parseInt($(".exploreArrowPolygon").css("stroke-width")) -
+      initialStrokeWidth;
+    var diffFontWeight =
+      parseInt($(".exploreText").css("font-weight")) - initialFontWeight;
     var currRightShift = parseInt($(".explore").css("right"));
     $(".explore").css("cursor", "default");
     $(".explore").animate(
@@ -582,7 +601,13 @@ function hoverExplore(animTime, colorScheme, initialFontWeight, initialStrokeWid
   }
 }
 
-function clickThemeChange(element, animTime, colorsJSON, colorTheme, initialFlexBasis) {
+function clickThemeChange(
+  element,
+  animTime,
+  colorsJSON,
+  colorTheme,
+  initialFlexBasis
+) {
   /*
   Params:   element:          jQuery-object of the selection box' div, e.g. "$('#selectionDiv')".
                               IMPORTANT: HTML of element needs to be structured like:
@@ -800,6 +825,92 @@ function firstLoadIndexAnimation(reverseFlag) {
       }
     );
   }
+}
+
+/* -------------------------------------------------------------------------------
+---------------------------------- NAVIGATION ------------------------------------
+------------------------------------------------------------------------------- */
+function changeSubmenu(oldId, newId, indexFlag, reverseDirFlag = false) {
+  /*
+  Params:   oldId:            The (additional) id of ALL elements that belong to the menu/content that will be faded out
+                              --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
+            newId:            The (additional) id of ALL elements that belong to the menu/content that will be faded in
+                              --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
+  Flags:    indexFlag:        If true, changes the logo movement to the amount required for the index page
+                              (since on index, Logo centered, whereas for other submenus, logo on the lhs)
+            reverseDirFlag:   If false:   Anim direction: Left -> Right
+                              If true:    Anim direction: Right -> Left
+  Action:                     Plays the animation required to change submenus
+  Returns:                    -
+  */
+  const animTimeLogo = 1000;
+  const animTimeMove = 500;
+  // 1. Move logo out of screen
+  // -------------------------------------------
+  var amountToMove = window.innerWidth;
+  // If reverse direction, negate amount to move.
+  if (reverseDirFlag) {
+    amountToMove = -amountToMove;
+  }
+  // Animation
+  $("#logo").animate(
+    {
+      left: `+=${amountToMove}px`,
+    },
+    {
+      duration: animTimeLogo,
+      easing: "swing",
+      complete: () => {},
+    }
+  );
+  $("#movingbar").animate(
+    {
+      left: `+=${amountToMove}px`,
+    },
+    {
+      duration: animTimeLogo,
+      easing: "swing",
+      complete: () => {
+        // 2. Move content to the opposite side along with logo,
+        //    so it looks like the observer moves to the right
+        // -------------------------------------------
+        $(`#${oldId}`).animate(
+          {
+            left: `-=${amountToMove}px`,
+          },
+          {
+            duration: animTimeMove,
+            easing: "swing",
+            complete: () => {},
+          }
+        );
+        $("#logo").animate(
+          {
+            left: `-=${amountToMove}px`,
+          },
+          {
+            duration: animTimeMove,
+            easing: "swing",
+            complete: () => {},
+          }
+        );
+        $("#movingbar").animate(
+          {
+            left: `-=${amountToMove}px`,
+          },
+          {
+            duration: animTimeMove,
+            easing: "swing",
+            complete: () => {
+              // 3. Display-none the old contents, display-block the new ones
+              // 4. Move in the new content from the right along with finishing logo anim
+              // -------------------------------------------
+            },
+          }
+      },
+    }
+  );
+  
 }
 
 /* -------------------------------------------------------------------------------
