@@ -359,7 +359,7 @@ function resetSelectionBox(element, colorScheme, initialFlexBasis) {
   var svg = element.children("svg");
   var paths = svg.children("g").children("path");
   // Stop ongoing anims
-  $(":animated").stop(true);
+  element.filter(":animated").stop(true);
   // Reset all changes made in selection box functions
   $(".selectionBoxDiv").remove();
   element.css("flex-basis", initialFlexBasis);
@@ -506,7 +506,7 @@ function hoverExplore(animTime, colorScheme, initialFontWeight, initialStrokeWid
     Action:   Moves "START TOUR" button 1vh to the right and displays bold and clickable, reverses if flag true.
     Returns:  - 
   */
-  $(":animated").stop(true);
+  $("#explore :animated").stop(true);
   if (!reverseFlag) {
     // Get difference in stroke-width and font-weight to subtract
     var diffStrokeWidth = initialStrokeWidth + 50 - parseInt($(".exploreArrowPolygon").css("stroke-width"));
