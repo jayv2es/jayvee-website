@@ -90,7 +90,7 @@ app.get("/", async (req, res) => {
   const colorsData = await colors.find({});
   const colorsJSON = JSON.stringify(colorsData);
   console.log(colorsJSON);
-  // Save to colorscheme.json
+  // Save to colorscheme.json so functions.js can access
   fs.writeFileSync("./public/assets/json/colorscheme.json", colorsJSON);
   // Initialize website content/structure from DB and render index  
   req.session.structureData = await structure.find({});
