@@ -907,6 +907,7 @@ function changeSubmenu(oldId, newId, indexFlag, reverseDirFlag = false) {
               // -------------------------------------------
             },
           }
+        )
       },
     }
   );
