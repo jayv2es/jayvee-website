@@ -6,6 +6,7 @@ CONTAINS STYLES OF index.ejs
 
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap');
 
+
 /* --------------------------------------------------------
 ---------------------- INIT AND GRID ---------------------- 
 -------------------------------------------------------- */
@@ -154,8 +155,8 @@ div.movingbar {
     bottom: 0;
     position: absolute;
     border-radius: 3.2vh;
-    width: 100vw;
-    transform: translateX(-50vw);
+    width: 200vw;
+    transform: translateX(-150vw);
 
     left: -2vw; /*Start value; Animated in moveLogoToMenupoint*/
 }

@@ -17,7 +17,7 @@
                     0%
                 </div>
             </div>
-            <div class="title">
+            <div class="GC0 title">
                 <div class="h1title">
                     <%= structureData[0].indexTitle %>
                 </div>
@@ -25,13 +25,13 @@
                     <%= structureData[0].indexIntro %>
                 </div>
             </div>
-            <div class="butSocials">
+            <div class="GC0 butSocials">
                 <div class="butSocial bS0"></div>
                 <div class="butSocial bS1"></div>
                 <div class="butSocial bS2"></div>
                 <div class="butSocial bS3"></div>
             </div>
-            <div class="butOptions">
+            <div class="GC0 butOptions">
                 <div class="butOption bO0" id="bO0">
                     <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
                         viewBox="0 0 100 100"
@@ -134,7 +134,7 @@
             <div class="movingbar-container">
                 <div class="movingbar" id="movingbar"></div>
             </div>
-            <div class="menu">
+            <div class="GC1 menu">
                 <h2 class="h2menu m0" id="h2menu0">
                     <%= structureData[0].indexMenu[0].divisionTitle %>
                 </h2>
@@ -148,7 +148,7 @@
                     <%= structureData[0].indexMenu[3].divisionTitle %>
                 </h2>
             </div>
-            <div class="explore" id="explore">
+            <div class="GC0 explore" id="explore">
                 <div class="exploreArrowDiv" id="exploreArrowDiv">
                     <svg  class="exploreArrow" id="exploreArrow"  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
                         viewBox="-50 -250 300 1500"
@@ -171,6 +171,12 @@
             var xStart = window.innerWidth/4;
             window.firstLoadIndexAnimation(reverseFlag=true);
             $(document).ready(() => {
+                // Initialize grouped classes CSS
+                $('.GC0').show();
+                $('.GC1').hide();
+                $('.GC2').hide();
+                $('.GC3').hide();
+
                 // Load color scheme
                 var colors;
                 console.log();
@@ -234,6 +240,9 @@
                                 const initialStrokeWidth = parseInt($(".exploreArrowPolygon").css("stroke-width"));
                                 $('#explore').mouseenter(() => {
                                     window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=false);
+                                });
+                                $('#explore').click(() => {
+                                    window.changeSubmenuAnimation("GC0", "GC1", false, false);
                                 });
                                 $('#explore').mouseleave(() => {
                                     window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=true);

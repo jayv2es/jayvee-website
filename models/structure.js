@@ -16,10 +16,20 @@ var articleImageFormat = new Schema({
   // with the current image placed on the left-most position (2 would be mid, 3 right in the case of split=3)
 });
 
+// Downloads + Link models: [Displayed Text, Address/Link], e.g. ["CV", "my_CV.pdf"]
+var download = new Schema({
+  downloadTitle: String,
+  downloadAddress: String
+})
+var link = new Schema({
+  linkTitle: String,
+  linkAddress: String
+})
+
 // Infoboxes to be displayed on side of subdivs and articles
 var infoboxArticle = new Schema({
-  downloads: [String], // Links to DLs
-  links: [String], // Links to featured websites
+  downloads: [download], // Links to DLs
+  links: [link], // Links to featured websites
 });
 
 var infoboxSubdiv = new Schema({
