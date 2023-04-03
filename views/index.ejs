@@ -17,6 +17,13 @@
                     0%
                 </div>
             </div>
+            
+            <!--  .................................................................................... -->
+            <!--  .................................................................................... -->
+            <!--  GC0: FRONT PAGE / LANDING PAGE -->
+            <!--  .................................................................................... -->
+            <!--  .................................................................................... -->
+            
             <div class="GC0 title">
                 <div class="h1title">
                     <%= structureData[0].indexTitle %>
@@ -134,7 +141,7 @@
             <div class="movingbar-container">
                 <div class="movingbar" id="movingbar"></div>
             </div>
-            <div class="GC1 menu">
+            <div class="GC0 menu">
                 <h2 class="h2menu m0" id="h2menu0">
                     <%= structureData[0].indexMenu[0].divisionTitle %>
                 </h2>
@@ -164,7 +171,30 @@
                         START <br> TOUR
                     </div>
                 </div>
-            </div>                
+            </div>
+            
+            <!--  .................................................................................... -->
+            <!--  .................................................................................... -->
+            <!--  GC1: SUBMENU 1 -->
+            <!--  .................................................................................... -->
+            <!--  .................................................................................... -->
+            
+            <div class="GC1 divTitle" id="div1-title">
+                <h1 class="divTitleText" id="div1-title-tex">
+                    <%= structureData[0].indexMenu[0].divisionTitle %>
+                </h1>
+            </div>
+            <div class="GC1 divIntro" id="div1-intro">
+                <p class="divIntroText" id="div1-intro-text">
+                    <%= structureData[0].indexMenu[0].divisionIntro %>
+                </p>
+            </div>
+            <div class="GC1 divButtonContainer" id="div1-button-container">
+                <div class="divButton" id"div1-button">
+                    ENTER
+                </div>
+            </div>
+                            
         </div>
         <script>
             // Prepare animation
