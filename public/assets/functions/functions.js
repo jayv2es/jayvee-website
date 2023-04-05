@@ -875,7 +875,7 @@ function changeSubmenuAnimation(
   // Animation
   $("#logo").animate(
     {
-      left: `+=${amountToMove / 12}px`,
+      left: `+=${amountToMove / 4}px`,
     },
     {
       duration: animTimeLogo,
@@ -889,7 +889,7 @@ function changeSubmenuAnimation(
   // Movingbar animation
   $("#movingbar").animate(
     {
-      left: `+=${amountToMove / 12}px`,
+      left: `+=${amountToMove / 4}px`,
     },
     {
       duration: animTimeLogo,

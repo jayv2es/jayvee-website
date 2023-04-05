@@ -229,26 +229,55 @@ div.movingbar {
 -------------------------------------------------------- */
 
 .divTitle {
-  grid-row: 8/9;
-  grid-column: 12/17;
+  grid-row: 2/3;
+  grid-column: 4/17;
   position: relative;
   height: 100%;
+  background-color: red;
 }
 .divTitleText {
+  text-align: center;
   font-weight: 800;
   font-size: 10vh;
   margin: 0;
-  transform: translateY(-20%);
+  transform: translateY(10%);
 }
 
 .divIntro {
-  grid-row: 10/13;
-  grid-column: 12/17;
+  grid-row: 4/5;
+  grid-column: 4/17;
   position: relative;
   height: 100%;
+  background-color: blue;
 }
 .divIntroText {
   font-size: 3vh;
   margin: 0;
-  transform: translateY(-20%);
+  transform: translateY(130%);
+  text-align: center;
+}
+
+.divButtonContainer {
+  grid-row: 18/19;
+  grid-column: 4/17;
+  position: relative;
+  height: 100%;
+  background-color: green;
+  display: flex;
+  justify-content: center;
+  vertical-align: center;
+}
+.divButton {
+  position: relative;
+  height: 3.5vh;
+  width: 17.5vh;
+  min-height: 20px;
+  min-width: 100px;
+  background-color: yellow;
+}
+.divButtonText {
+  font-weight: 300;
+  font-size: 45%;
+  position: relative;
+  margin: 0;
 }
