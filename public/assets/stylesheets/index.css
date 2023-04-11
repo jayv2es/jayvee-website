@@ -233,51 +233,84 @@ div.movingbar {
   grid-column: 4/17;
   position: relative;
   height: 100%;
-  background-color: red;
 }
 .divTitleText {
   text-align: center;
   font-weight: 800;
-  font-size: 10vh;
+  font-size: 50px;
   margin: 0;
-  transform: translateY(10%);
-}
-
-.divIntro {
-  grid-row: 4/5;
-  grid-column: 4/17;
-  position: relative;
-  height: 100%;
-  background-color: blue;
+  transform: translateY(30%);
 }
 .divIntroText {
-  font-size: 3vh;
-  margin: 0;
-  transform: translateY(130%);
   text-align: center;
+  font-size: smaller;
+  position: relative;
+  top: 0;
+  left: 0;
+  margin: 0;
+  transform: translateY(50%);
 }
 
 .divButtonContainer {
   grid-row: 18/19;
   grid-column: 4/17;
-  position: relative;
   height: 100%;
-  background-color: green;
   display: flex;
   justify-content: center;
-  vertical-align: center;
+  align-items: center;
 }
 .divButton {
-  position: relative;
-  height: 3.5vh;
-  width: 17.5vh;
+  height: 4vh;
+  width: 20vh;
   min-height: 20px;
   min-width: 100px;
-  background-color: yellow;
+  border: 0.5vh solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .divButtonText {
-  font-weight: 300;
-  font-size: 45%;
-  position: relative;
+  font-weight: 500;
+  font-size: smaller;
   margin: 0;
+  text-align: center;
+}
+
+.arrows {
+  grid-row: 10/13;
+  grid-column: 4/17;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.arrowLeftContainer {
+  height: 100%;
+  width: 5%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  position: relative;
+  
+}
+.arrowLeft {
+  height: 75%;
+  z-index: 2;
+  transform: scaleX(-1);
+  opacity: 0;   /* Animated in functions.js */
+}
+
+.arrowRightContainer {
+  height: 100%;
+  width: 5%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  position: relative;
+  
+}
+.arrowRight {
+  height: 75%;
+  z-index: 2;
+  opacity: 0;   /* Animated in functions.js */
 }

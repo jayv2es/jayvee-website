@@ -179,21 +179,85 @@
             <!--  .................................................................................... -->
             <!--  .................................................................................... -->
             
-            <div class="GC1 divTitle" id="div1-title">
-                <h1 class="divTitleText" id="div1-title-tex">
+            <div class="GC1 divTitle" id="GC1-title">
+                <h1 class="divTitleText" id="GC1-title-text">
                     <%= structureData[0].indexMenu[0].divisionTitle %>
                 </h1>
-            </div>
-            <div class="GC1 divIntro" id="div1-intro">
-                <p class="divIntroText" id="div1-intro-text">
+                <p class="divIntroText" id="GC1-intro-text">
                     <%= structureData[0].indexMenu[0].divisionIntro %>
                 </p>
             </div>
-            <div class="GC1 divButtonContainer" id="div1-button-container">
-                <div class="divButton" id"div1-button">
-                    <p class="divButtonText" id"div1-button-text">
+            <div class="GC1 divButtonContainer" id="GC1-button-container">
+                <div class="divButton" id="GC1-button">
+                    <p class="divButtonText" id="GC1-button-text">
                         ENTER
                     </p>
+                </div>
+            </div>
+            <div class="GC1 arrows" id="GC1-arrows">
+                <div class="arrowRightContainer" id="GC1-arrowRight-container">
+                    <svg  class="arrowRight" id="GC1-arrowRight"  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+                        viewBox="-50 -250 300 1500"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Ebene_x0020_1">
+                            <metadata id="CorelCorpID_0Corel-Layer"/>
+                            <polygon id="GC1-arrowRight-Polygon" class="arrowRightPolygon" stroke-width="0" stroke="black" points="0,0 57,0 200,500 57,1000 0,1000 143,500 "/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="arrowLeftContainer" id="GC1-arrowLeft-container">
+                    <svg  class="arrowLeft" id="GC1-arrowLeft"  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+                        viewBox="-50 -250 300 1500"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Ebene_x0020_1">
+                            <metadata id="CorelCorpID_0Corel-Layer"/>
+                            <polygon id="GC1-arrowLeft-Polygon" class="arrowLeftPolygon" stroke-width="0" stroke="black" points="0,0 57,0 200,500 57,1000 0,1000 143,500 "/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!--  .................................................................................... -->
+            <!--  .................................................................................... -->
+            <!--  GC2: SUBMENU 2 -->
+            <!--  .................................................................................... -->
+            <!--  .................................................................................... -->
+            
+            <div class="GC2 divTitle" id="GC2-title">
+                <h1 class="divTitleText" id="GC2-title-text">
+                    <%= structureData[0].indexMenu[1].divisionTitle %>
+                </h1>
+                <p class="divIntroText" id="GC2-intro-text">
+                    <%= structureData[0].indexMenu[1].divisionIntro %>
+                </p>
+            </div>
+            <div class="GC2 divButtonContainer" id="GC2-button-container">
+                <div class="divButton" id="GC2-button">
+                    <p class="divButtonText" id="GC2-button-text">
+                        ENTER
+                    </p>
+                </div>
+            </div>
+            <div class="GC2 arrows" id="GC2-arrows">
+                <div class="arrowRightContainer" id="GC2-arrowRight-container">
+                    <svg  class="arrowRight" id="GC2-arrowRight"  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+                        viewBox="-50 -250 300 1500"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Ebene_x0020_1">
+                            <metadata id="CorelCorpID_0Corel-Layer"/>
+                            <polygon id="GC2-arrowRight-Polygon" class="arrowRightPolygon" stroke-width="0" stroke="black" points="0,0 57,0 200,500 57,1000 0,1000 143,500 "/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="arrowLeftContainer" id="GC2-arrowLeft-container">
+                    <svg  class="arrowLeft" id="GC2-arrowLeft"  xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+                        viewBox="-50 -250 300 1500"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Ebene_x0020_1">
+                            <metadata id="CorelCorpID_0Corel-Layer"/>
+                            <polygon id="GC2-arrowLeft-Polygon" class="arrowLeftPolygon" stroke-width="0" stroke="black" points="0,0 57,0 200,500 57,1000 0,1000 143,500 "/>
+                        </g>
+                    </svg>
                 </div>
             </div>
                             
@@ -242,6 +306,8 @@
                                 ---------------------------------------------------------------------- */
 
                                 // MENU ANIMATIONS
+                                // -----------------------------------------------------------------------
+                                // -----------------------------------------------------------------------
                                 $('#h2menu0').mouseenter(() => {
                                     window.hoverMenupoint(0, 500, colors, reverseFlag=false);
                                 });
@@ -268,20 +334,46 @@
                                 });
 
                                 // EXPLORE ANIMATIONS
+                                // -----------------------------------------------------------------------
+                                // -----------------------------------------------------------------------
                                 const initialFontWeight = parseInt($(".exploreText").css("font-weight"));
                                 const initialStrokeWidth = parseInt($(".exploreArrowPolygon").css("stroke-width"));
                                 $('#explore').mouseenter(() => {
                                     window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=false);
                                 });
                                 $('#explore').click(() => {
-                                    window.changeSubmenuAnimation("GC0", "GC1", false, false);
+                                    window.changeSubmenuAnimation("GC0", "GC1", true, false);
                                 });
                                 $('#explore').mouseleave(() => {
                                     window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=true);
                                 });
 
-                                // OPTION BOXES ANIMATIONS
+                                // ARROW ANIMATIONS
+                                // -----------------------------------------------------------------------
+                                // -----------------------------------------------------------------------
+                                const initialStrokeWidthArrow = parseInt($(".arrowLeftPolygon").css("stroke-width"));
+                                $('#GC1-arrowRight-container').mouseenter(() => {
+                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=false);
+                                });
+                                $('#GC1-arrowRight-container').click(() => {
+                                    window.changeSubmenuAnimation("GC1", "GC2", false, false);
+                                });
+                                $('#GC1-arrowRight-container').mouseleave(() => {
+                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=true);
+                                });
+                                $('#GC1-arrowLeft-container').mouseenter(() => {
+                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=false);
+                                });
+                                $('#GC1-arrowLeft-container').click(() => {
+                                    window.changeSubmenuAnimation("GC0", "GC1", true, true);
+                                });
+                                $('#GC1-arrowLeft-container').mouseleave(() => {
+                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=true);
+                                });
 
+                                // OPTION BOXES ANIMATIONS
+                                // -----------------------------------------------------------------------
+                                // -----------------------------------------------------------------------
                                 const initialFlexBasis = 3.5;         // Value of flex basis as set in CSS in vh => Gets converted to px inside function arguments
 
                                 $('#bO0').mouseenter(() => {
@@ -424,6 +516,19 @@
                                     window.contractSelectionBox($('#bO6'), 300, colors, initialFlexBasis*$(window).height() / 100);
                                 })
 
+                                // BUTTON INTERACTIONS
+                                // -----------------------------------------------------------------------
+                                // -----------------------------------------------------------------------
+                                $('.divButton').mouseenter(() => {
+                                    window.hoverButton($('.divButton'), colors, false);
+                                });
+                                $('.divButton').mouseleave(() => {
+                                    window.hoverButton($('.divButton'), colors, true);
+                                })
+    
+                                // GENERAL / ADDITIONAL
+                                // -----------------------------------------------------------------------
+                                // -----------------------------------------------------------------------
                                 // If window gets resized, resize all the boxes using the reset function:
                                 $(window).resize(function() {
                                     for(var i=0; i<=$('.butOptions').children().length-1; i++) {

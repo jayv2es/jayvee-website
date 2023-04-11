@@ -135,6 +135,11 @@ function initializeCSSColorTheme(colorSchemeRGB) {
   $("#exploreText").css("color", colorSchemeHEX[1]);
   $("#exploreArrowPolygon").css("fill", colorSchemeHEX[1]);
   $("#exploreArrowPolygon").css("stroke", colorSchemeHEX[1]);
+
+  $(".arrowLeftPolygon").css("fill", colorSchemeHEX[1]);
+  $(".arrowLeftPolygon").css("stroke", colorSchemeHEX[1]);
+  $(".arrowRightPolygon").css("fill", colorSchemeHEX[1]);
+  $(".arrowRightPolygon").css("stroke", colorSchemeHEX[1]);
 }
 
 /* -------------------------------------------------------------------------------
@@ -383,6 +388,37 @@ function resetSelectionBox(element, colorScheme, initialFlexBasis) {
 }
 
 /* -------------------------------------------------------------------------------
+------------------------------- BUTTON FUNCTIONS ---------------------------------
+------------------------------------------------------------------------------- */
+function hoverButton(element, colorScheme, reverseFlag = false) {
+  /*
+  Params:   element:          jQuery-object of the button's div, e.g. "$('#button')".
+                              IMPORTANT: HTML of element needs to be structured like:
+                              <div>...<svg>...<g>...<path>... with only ONE <g>! 
+                              => Delete all multiple layers, i.e. multiple <g> before the <path>.
+            colorScheme:      The in EJS selected/generated color scheme
+  Flags:    reverse:          If true, plays animation backwords (i.e. when mouseleave)
+  Action:                     Switches colors of button and displays cursor as "pointer"
+  Returns:  -
+  */
+  if(!reverseFlag) {
+    element.css("background-color", RGBtoHEX(colorScheme[1]));
+    element.css("color", RGBtoHEX(colorScheme[0]));
+    element.css("cursor", "pointer");
+    element.css("font-weight", 800);
+    element.css("border-color", RGBtoHEX(colorScheme[1]));
+  } else {
+    element.css("background-color", RGBtoHEX(colorScheme[0]));
+    element.css("color", RGBtoHEX(colorScheme[1]));
+    element.css("cursor", "default");
+    element.css("font-weight", 500);
+    element.css("border-color", RGBtoHEX(colorScheme[1]));
+  }
+  
+}
+
+
+/* -------------------------------------------------------------------------------
 ---------------------------------- INDEX.EJS -------------------------------------
 ------------------------------------------------------------------------------- */
 function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
@@ -602,6 +638,104 @@ function hoverExplore(
         complete: () => {},
       }
     );
+  }
+}
+
+function hoverArrow(
+  animTime,
+  colorScheme,
+  initialStrokeWidth,
+  arrowDirection,
+  reverseFlag = false
+) {
+  /*  
+    Params:   animTime:             Duration of animation
+              colorScheme:          The in EJS selected/generated color scheme
+              initialStrokeWidth:   Current stroke-width (const), extracted in EJS code before calling the function.
+              arrowDirection:       "Left" or "Right", depending on which side arrow
+    Flags:    reverse:              If true, plays animation backwords (i.e. when mouseleave)
+    Action:   Moves "arrows 1vh to the left/right (dep. on arrowDirection) and displays bold and clickable, reverses if flag true.
+    Returns:  - 
+  */
+  $(".arrows :animated").stop(true);
+  if (!reverseFlag) {
+    // Get difference in stroke-width and font-weight to subtract
+    var diffStrokeWidth = initialStrokeWidth + 50 - parseInt($(`.arrow${arrowDirection}Container`).css("stroke-width"));
+    $(`.arrow${arrowDirection}Container`).css("cursor", "pointer");
+    $(`.arrow${arrowDirection}Polygon`).animate(
+      {
+        "stroke-width": `+=${diffStrokeWidth}`,
+      },
+      {
+        duration: animTime,
+        easing: "swing",
+        complete: () => {},
+      }
+    );
+    if(arrowDirection == "Right") {
+      var diffRightShift = parseInt(window.innerWidth / 100) - parseInt($(`.arrow${arrowDirection}Container`).css("right"));
+      $(`.arrow${arrowDirection}Container`).animate(
+        {
+          right: `-=${diffRightShift}`,
+        },
+        {
+          duration: animTime,
+          easing: "swing",
+          complete: () => {},
+        }
+      );
+    } else {
+      var diffLeftShift = parseInt(window.innerWidth / 100) - parseInt($(`.arrow${arrowDirection}Container`).css("left"));
+      $(`.arrow${arrowDirection}Container`).animate(
+        {
+          left: `-=${diffLeftShift}`,
+        },
+        {
+          duration: animTime,
+          easing: "swing",
+          complete: () => {},
+        }
+      );
+    }
+  } else {
+    // Get difference in stroke-width and font-weight to subtract
+    var diffStrokeWidth = parseInt($(`.arrow${arrowDirection}Polygon`).css("stroke-width")) - initialStrokeWidth;
+    $(`.arrow${arrowDirection}Container`).css("cursor", "default");
+    $(`.arrow${arrowDirection}Polygon`).animate(
+      {
+        "stroke-width": `-=${diffStrokeWidth}`,
+      },
+      {
+        duration: animTime,
+        easing: "swing",
+        complete: () => {},
+      }
+    );
+    if(arrowDirection == "Right") {
+      var currRightShift = parseInt($(`.arrow${arrowDirection}Container`).css("right"));
+      $(`.arrow${arrowDirection}Container`).animate(
+        {
+          right: `-=${currRightShift}`,
+        },
+        {
+          duration: animTime,
+          easing: "swing",
+          complete: () => {},
+        }
+      );
+    } else {
+      var currLeftShift = parseInt($(`.arrow${arrowDirection}Container`).css("left"));
+      $(`.arrow${arrowDirection}Container`).animate(
+        {
+          left: `-=${currLeftShift}`,
+        },
+        {
+          duration: animTime,
+          easing: "swing",
+          complete: () => {},
+        }
+      );
+    }
   }
 }
 
@@ -845,8 +979,7 @@ function changeSubmenuAnimation(
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
             newClass:         The (additional) class of ALL elements that belong to the menu/content that will be faded in
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
-  Flags:    indexFlag:        If true, changes the logo movement to the amount required for the index page
-                              (since on index, Logo centered, whereas for other submenus, logo on the lhs)
+  Flags:    indexFlag:        If true, adapts animation for the transition INDEX -> SUBMENU (or vice versa if reverseDirFlag = true)
             reverseDirFlag:   If false:   Anim direction: Left -> Right
                               If true:    Anim direction: Right -> Left
   Action:                     Plays the animation required to change submenus
@@ -854,23 +987,51 @@ function changeSubmenuAnimation(
   */
   const animTimeLogo = 1000;
   const animTimeMove = animTimeLogo * 2;
-  // 0. Fade out explore button
-  $(".explore").animate(
-    {
-      opacity: "-=1",
-    },
-    {
-      duration: animTimeLogo / 4,
-      easing: "swing",
-      complete: () => {},
-    }
-  );
+  // 0. Fade out explore button (if index) or arrow buttons (if other)
+  if(indexFlag && !reverseDirFlag) {
+    $(".explore").animate(
+      {
+        opacity: "-=1",
+      },
+      {
+        duration: animTimeLogo / 4,
+        easing: "swing",
+        complete: () => {},
+      }
+    );
+  } else {
+    $(`#${oldClass}-arrowLeft`).animate(
+      {
+        opacity: "-=1",
+      },
+      {
+        duration: animTimeLogo / 4,
+        easing: "swing",
+        complete: () => {},
+      }
+    );
+    $(`#${oldClass}-arrowRight`).animate(
+      {
+        opacity: "-=1",
+      },
+      {
+        duration: animTimeLogo / 4,
+        easing: "swing",
+        complete: () => {},
+      }
+    );
+  }
+  
   // 1. Move logo out of screen
   // -------------------------------------------
   var amountToMove = window.innerWidth;
   // If reverse direction, negate amount to move.
   if (reverseDirFlag) {
     amountToMove = -amountToMove;
+    // Change classes if reverse direction
+    var tempClass = oldClass;
+    oldClass = newClass;
+    newClass = tempClass;
   }
   // Animation
   $("#logo").animate(
@@ -930,10 +1091,7 @@ function changeSubmenuAnimation(
             {
               duration: animTimeMove * 0.75,
               easing: "swing",
-              complete: () => {
-                // 3. Deactivate old contents
-                $(`.${oldClass}`).hide();
-              },
+              complete: () => {},
             }
           );
           $(`.${newClass}`).animate(
@@ -953,7 +1111,46 @@ function changeSubmenuAnimation(
             {
               duration: animTimeMove,
               easing: "swing",
-              complete: () => {},
+              complete: () => {
+                // Fade out and reposition old class
+                $(`.${oldClass}`).hide();
+                $(`.${oldClass}`).css("left", 0);
+                // 4. Fade in left/right arrows or explore arrow
+                // -------------------------------------------
+                if(indexFlag && reverseDirFlag) {
+                  $('.explore').animate(
+                    {
+                      opacity: "+=1"
+                    },
+                    {
+                      duration: 500,
+                      easing: "swing",
+                      complete: () => {}
+                    }
+                  );
+                } else {
+                  $(`#${newClass}-arrowLeft`).animate(
+                    {
+                      opacity: "+=1"
+                    },
+                    {
+                      duration: 500,
+                      easing: "swing",
+                      complete: () => {}
+                    }
+                  );
+                  $(`#${newClass}-arrowRight`).animate(
+                    {
+                      opacity: "+=1"
+                    },
+                    {
+                      duration: 500,
+                      easing: "swing",
+                      complete: () => {}
+                    }
+                  );
+                };
+              },
             }
           );
         }
