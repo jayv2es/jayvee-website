@@ -450,7 +450,9 @@ function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
 
     // If reverseFlag = true:
   } else {
-    $(":animated").filter(":not(#explore, #butOptions, #butSocials)").stop(true); // Stop ongoing anims
+    $(":animated")
+      .filter(":not(#explore, #butOptions, #butSocials)")
+      .stop(true); // Stop ongoing anims
     // Change element cursor and color back to black
     // Change cursor type and color of element
     element.css("cursor", "default");
@@ -526,8 +528,10 @@ function hoverExplore(
       initialStrokeWidth +
       50 -
       parseInt($(".exploreArrowPolygon").css("stroke-width"));
-    var diffFontWeight = initialFontWeight + 300 - parseInt($(".exploreText").css("font-weight"));
-    var diffRightShift = parseInt(window.innerWidth / 100) - parseInt($(".explore").css("right"));
+    var diffFontWeight =
+      initialFontWeight + 300 - parseInt($(".exploreText").css("font-weight"));
+    var diffRightShift =
+      parseInt(window.innerWidth / 100) - parseInt($(".explore").css("right"));
     $(".explore").css("cursor", "pointer");
     $(".explore").animate(
       {
@@ -830,7 +834,12 @@ function firstLoadIndexAnimation(reverseFlag) {
 /* -------------------------------------------------------------------------------
 ---------------------------------- NAVIGATION ------------------------------------
 ------------------------------------------------------------------------------- */
-function changeSubmenuAnimation(oldClass, newClass, indexFlag, reverseDirFlag = false) {
+function changeSubmenuAnimation(
+  oldClass,
+  newClass,
+  indexFlag,
+  reverseDirFlag = false
+) {
   /*
   Params:   oldClass:         The (additional) class of ALL elements that belong to the menu/content that will be faded out
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
@@ -843,16 +852,19 @@ function changeSubmenuAnimation(oldClass, newClass, indexFlag, reverseDirFlag = 
   Action:                     Plays the animation required to change submenus
   Returns:                    -
   */
-  const animTimeLogo = 2000;
-  const animTimeMove = 1000;
+  const animTimeLogo = 1000;
+  const animTimeMove = animTimeLogo * 2;
   // 0. Fade out explore button
-  $('.explore').animate({
-    opacity: "-=1"
-  },{
-    duration: animTimeLogo/4,
-    easing: "swing",
-    complete: () => {}
-  })
+  $(".explore").animate(
+    {
+      opacity: "-=1",
+    },
+    {
+      duration: animTimeLogo / 4,
+      easing: "swing",
+      complete: () => {},
+    }
+  );
   // 1. Move logo out of screen
   // -------------------------------------------
   var amountToMove = window.innerWidth;
@@ -863,7 +875,7 @@ function changeSubmenuAnimation(oldClass, newClass, indexFlag, reverseDirFlag = 
   // Animation
   $("#logo").animate(
     {
-      left: `+=${amountToMove}px`,
+      left: `+=${amountToMove / 4}px`,
     },
     {
       duration: animTimeLogo,
@@ -877,30 +889,53 @@ function changeSubmenuAnimation(oldClass, newClass, indexFlag, reverseDirFlag = 
   // Movingbar animation
   $("#movingbar").animate(
     {
-      left: `+=${amountToMove}px`,
+      left: `+=${amountToMove / 4}px`,
     },
     {
       duration: animTimeLogo,
       easing: "swing",
       progress: (anim, prog) => {
-        // 2. As soon as logo halfway through movement: 
+        // 2. As soon as logo halfway through movement:
         // Place new contents out of screen, so they can be moved in along with other animation
         // -------------------------------------------
-        if(prog >= 0.5 && firstProgRead) {
-          firstProgRead = false;  // Progress has been read once above 0.5
+        if (prog >= 0.5 && firstProgRead) {
+          firstProgRead = false; // Progress has been read once above 0.5
           $(`.${newClass}`).css("position", "relative");
           $(`.${newClass}`).animate(
             {
-              left: `+=${amountToMove}px`
+              left: `+=${amountToMove}px`,
             },
             {
-              duration: 0
+              duration: 0,
             }
           );
-          $(`.${newClass}`).show()
+          $(`.${newClass}`).show();
           // 3. Move content to the opposite side along with logo,
           //    so it looks like the observer moves to the right
           // -------------------------------------------
+          $("#logo").animate(
+            {
+              left: `-=${amountToMove / 4}px`,
+            },
+            {
+              duration: animTimeMove * 0.75,
+              easing: "swing",
+              complete: () => {},
+            }
+          );
+          $("#movingbar").animate(
+            {
+              left: `-=${amountToMove / 4}px`,
+            },
+            {
+              duration: animTimeMove * 0.75,
+              easing: "swing",
+              complete: () => {
+                // 3. Deactivate old contents
+                $(`.${oldClass}`).hide();
+              },
+            }
+          );
           $(`.${newClass}`).animate(
             {
               left: `-=${amountToMove}px`,
@@ -921,34 +956,10 @@ function changeSubmenuAnimation(oldClass, newClass, indexFlag, reverseDirFlag = 
               complete: () => {},
             }
           );
-          $("#logo").animate(
-            {
-              left: `-=${amountToMove}px`,
-            },
-            {
-              duration: animTimeMove,
-              easing: "swing",
-              complete: () => {},
-            }
-          );
-          $("#movingbar").animate(
-            {
-              left: `-=${amountToMove}px`,
-            },
-            {
-              duration: animTimeMove,
-              easing: "swing",
-              complete: () => {
-                // 3. Deactivate old contents
-                $(`.${oldClass}`).hide();
-              },
-            }
-          )
         }
       },
     }
   );
-  
 }
 
 /* -------------------------------------------------------------------------------
