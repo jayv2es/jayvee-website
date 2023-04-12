@@ -17,7 +17,7 @@ body {
   margin: 0;
   height: 100%;
   font-family: "Montserrat", sans-serif;
-  font-size: larger;
+  font-size: 20px;
 }
 
 /* MOBILE VERSION WITH ROTATING PEN INSTEAD OF SLIDING */
@@ -121,12 +121,12 @@ div.explore {
   position: relative;
   left: 0;
   top: 0;
-  font-size: 50px;
+  font-size: 35px;
 }
 
 .pintro {
   font-weight: 300;
-  font-size: smaller;
+  font-size: 15px;
   line-height: 130%;
   position: relative;
   top: 0;
@@ -173,6 +173,7 @@ div.movingbar {
   margin-left: 2vh;
   border: 0.3vh solid;
   float: right;
+  background-color: transparent;
 }
 
 .bS3,
@@ -237,13 +238,13 @@ div.movingbar {
 .divTitleText {
   text-align: center;
   font-weight: 800;
-  font-size: 50px;
+  font-size: 35px;
   margin: 0;
   transform: translateY(30%);
 }
 .divIntroText {
   text-align: center;
-  font-size: smaller;
+  font-size: 15px;
   position: relative;
   top: 20px;
   left: 0;
@@ -270,7 +271,7 @@ div.movingbar {
 }
 .divButtonText {
   font-weight: 500;
-  font-size: smaller;
+  font-size: 15px;
   margin: 0;
   text-align: center;
 }

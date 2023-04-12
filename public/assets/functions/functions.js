@@ -113,6 +113,16 @@ function RGBtoHEX(rgb) {
   return hexString;
 }
 
+// Convert RGB + alpha value to RGB (inputs rgb-array (1x3) + alpha-scalar + rgb-array of Background (1x3), returns rgb-array (1x3))
+function RGBAtoRGB(rgb, alpha, backgroundRGB) {
+  var rgbValues = [
+    Math.floor((1-alpha)*backgroundRGB[0] + alpha*rgb[0]),
+    Math.floor((1-alpha)*backgroundRGB[1] + alpha*rgb[1]),
+    Math.floor((1-alpha)*backgroundRGB[2] + alpha*rgb[2])
+  ];
+  return rgbValues;
+}
+
 // Initializes the CSS of the website with a desired color theme
 function initializeCSSColorTheme(colorSchemeRGB) {
   var colorSchemeHEX = new Array(colorSchemeRGB.length);
@@ -125,9 +135,7 @@ function initializeCSSColorTheme(colorSchemeRGB) {
   $("#logo-svg-J").attr("fill", colorSchemeHEX[1]);
   $("#logo-svg-V").attr("fill", colorSchemeHEX[1]);
 
-  $(".butSocial").css("background-color", colorSchemeHEX[1]);
   $(".butSocial").css("border-color", colorSchemeHEX[1]);
-  $(".butOption").css("background-color", colorSchemeHEX[0]);
   $(".butOption").css("border-color", colorSchemeHEX[1]);
 
   $(".butOptionIcon").attr("fill", colorSchemeHEX[1]);
@@ -322,7 +330,7 @@ function contractSelectionBox(
   // Change cursor-type back
   element.css("cursor", "default");
   // Change colors back and reset widths and heights of SVG
-  element.css("background-color", RGBtoHEX(colorScheme[0]));
+  element.css("background-color", "transparent");
   element.css("color", RGBtoHEX(colorScheme[1]));
   paths.each((index, path) => {
     $(path).attr("fill", RGBtoHEX(colorScheme[1]));
@@ -420,7 +428,7 @@ function hoverButton(element, colorScheme, reverseFlag = false) {
     element.css("font-weight", 800);
     element.css("border-color", RGBtoHEX(colorScheme[1]));
   } else {
-    element.css("background-color", RGBtoHEX(colorScheme[0]));
+    element.css("background-color", "transparent");
     element.css("color", RGBtoHEX(colorScheme[1]));
     element.css("cursor", "default");
     element.css("font-weight", 500);
@@ -1081,7 +1089,7 @@ function changeSubmenuAnimation(
 
   // 1. Move logo out of screen
   // -------------------------------------------
-  const colorSchemeIndex = newClassNo + 2; // Get color of subdivision for background
+  var colorSchemeIndex = newClassNo + 1; // Get color of subdivision for background
   // Set color to standard background color if going back to index page
   if (indexFlag && reverseDirFlag) {
     colorSchemeIndex = 0;
@@ -1122,10 +1130,10 @@ function changeSubmenuAnimation(
         // Place new contents out of screen, so they can be moved in along with other animation
         // -------------------------------------------
         if (prog >= 0.5 && firstProgRead) {
-          // Change background colors
+          // Change background colors (with alpha=0.5)
           linearlyChangeRGB(
-            colorScheme[colorSchemeIndex],
-            animTimeMove * 0.5,
+            RGBAtoRGB(colorScheme[colorSchemeIndex], 0.2, colorScheme[0]),
+            animTimeMove/8,
             $("html"),
             "background-color",
             false
