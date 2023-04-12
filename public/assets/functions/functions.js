@@ -1030,7 +1030,7 @@ function changeSubmenuAnimation(
   newClassNo,
   colorScheme,
   indexFlag,
-  reverseDirFlag = false
+  reverseFlag = false
 ) {
   /*
   Params:   oldClassNo:         The (additional) class of ALL elements that belong to the menu/content that will be faded out
@@ -1040,8 +1040,8 @@ function changeSubmenuAnimation(
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
                               --> Parameter: INTEGER (e.g. "1" for Grouped Class "GC1")
             colorScheme:      The in EJS selected/generated color scheme
-  Flags:    indexFlag:        If true, adapts animation for the transition INDEX -> SUBMENU (or vice versa if reverseDirFlag = true)
-            reverseDirFlag:   If false:   Anim direction: Left -> Right
+  Flags:    indexFlag:        If true, adapts animation for the transition INDEX -> SUBMENU (or vice versa if reverseFlag = true)
+            reverseFlag:   If false:   Anim direction: Left -> Right
                               If true:    Anim direction: Right -> Left
   Action:                     Plays the animation required to change submenus
   Returns:                    -
@@ -1053,7 +1053,7 @@ function changeSubmenuAnimation(
   const animTimeLogo = 1000;
   const animTimeMove = animTimeLogo * 2;
   // 0. Fade out explore button (if index) or arrow buttons (if other)
-  if (indexFlag && !reverseDirFlag) {
+  if (indexFlag && !reverseFlag) {
     $(".explore").animate(
       {
         opacity: "-=1",
@@ -1091,12 +1091,12 @@ function changeSubmenuAnimation(
   // -------------------------------------------
   var colorSchemeIndex = newClassNo + 1; // Get color of subdivision for background
   // Set color to standard background color if going back to index page
-  if (indexFlag && reverseDirFlag) {
+  if (indexFlag && reverseFlag) {
     colorSchemeIndex = 0;
   }
   var amountToMove = window.innerWidth;
   // If reverse direction, negate amount to move.
-  if (reverseDirFlag) {
+  if (reverseFlag) {
     amountToMove = -amountToMove;
     // Change classes if reverse direction
     var tempClass = oldClass;
@@ -1193,9 +1193,10 @@ function changeSubmenuAnimation(
                 // Fade out and reposition old class
                 $(`.${oldClass}`).hide();
                 $(`.${oldClass}`).css("left", 0);
+                
                 // 4. Fade in left/right arrows or explore arrow
                 // -------------------------------------------
-                if (indexFlag && reverseDirFlag) {
+                if (indexFlag && reverseFlag) {
                   $(".explore").animate(
                     {
                       opacity: "+=1",
