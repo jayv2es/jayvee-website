@@ -145,16 +145,25 @@ function initializeCSSColorTheme(colorSchemeRGB) {
 /* -------------------------------------------------------------------------------
 ------------------------------ GENERAL FUNCTIONS --------------------------------
 ------------------------------------------------------------------------------- */
-function linearlyChangeRGB(rgbEnd, animTime) {
+function linearlyChangeRGB(
+  rgbEnd,
+  animTime,
+  element,
+  property,
+  attrFlag = false
+) {
   /*  
     Params:   rgbEnd:     The RGB-values desired at the end of the animation (array-like)
               animTime:   Duration of animation
-    Flags:    - 
+              element:    jQuery-element to change colors
+              property:   CSS- or attr-property of element that needs to change color
+    Flags:    attrFlag:   If true, treats attribute instead of CSS of an object
+                          (i.e. element.attr(...) instead of element.css(...)) 
     Action:               Linearly animates the RGB values of an element.
     Returns:  -           
   */
   // First get current RGB values
-  var rgbStartString = $("#movingbar").css("background-color"); // retrieves the font color as a string, e.g. "rgb(0, 0, 255)"
+  var rgbStartString = element.css(property); // retrieves the font color as a string, e.g. "rgb(0, 0, 255)"
   var rgbStartArray = rgbStartString
     .substring(4, rgbStartString.length - 1)
     .split(","); // splits the string into an array of RGB values
@@ -184,14 +193,17 @@ function linearlyChangeRGB(rgbEnd, animTime) {
     rgbCurrent[1] += rgbDiff[1] / rgbSteps;
     rgbCurrent[2] += rgbDiff[2] / rgbSteps;
     stepCtr++;
-    $("#logo-svg-V").attr(
-      "fill",
-      `rgb(${rgbCurrent[0]},${rgbCurrent[1]},${rgbCurrent[2]})`
-    );
-    $("#movingbar").css(
-      "background-color",
-      `rgb(${rgbCurrent[0]},${rgbCurrent[1]},${rgbCurrent[2]})`
-    );
+    if (attrFlag) {
+      element.attr(
+        property,
+        `rgb(${rgbCurrent[0]},${rgbCurrent[1]},${rgbCurrent[2]})`
+      );
+    } else {
+      element.css(
+        property,
+        `rgb(${rgbCurrent[0]},${rgbCurrent[1]},${rgbCurrent[2]})`
+      );
+    }
   }, millisecsInterval);
 }
 
@@ -401,7 +413,7 @@ function hoverButton(element, colorScheme, reverseFlag = false) {
   Action:                     Switches colors of button and displays cursor as "pointer"
   Returns:  -
   */
-  if(!reverseFlag) {
+  if (!reverseFlag) {
     element.css("background-color", RGBtoHEX(colorScheme[1]));
     element.css("color", RGBtoHEX(colorScheme[0]));
     element.css("cursor", "pointer");
@@ -414,9 +426,7 @@ function hoverButton(element, colorScheme, reverseFlag = false) {
     element.css("font-weight", 500);
     element.css("border-color", RGBtoHEX(colorScheme[1]));
   }
-  
 }
-
 
 /* -------------------------------------------------------------------------------
 ---------------------------------- INDEX.EJS -------------------------------------
@@ -433,7 +443,20 @@ function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
   // Get element
   const element = $(`#h2menu${elementNo}`);
   // Start RGB color change
-  linearlyChangeRGB(colorScheme[elementNo + 2], animTime / 8);
+  linearlyChangeRGB(
+    colorScheme[elementNo + 2],
+    animTime / 8,
+    $("#movingbar"),
+    "background-color",
+    false
+  );
+  linearlyChangeRGB(
+    colorScheme[elementNo + 2],
+    animTime / 8,
+    $("#logo-svg-V"),
+    "fill",
+    true
+  );
   // Initialize movement animation
   if (!reverseFlag) {
     // Change cursor type and color of element
@@ -497,7 +520,20 @@ function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
       `rgb(${colorScheme[1][0]},${colorScheme[1][1]},${colorScheme[1][2]})`
     );
     // Change svg/movingbar back to black
-    linearlyChangeRGB(colorScheme[1], animTime / 8);
+    linearlyChangeRGB(
+      colorScheme[1],
+      animTime / 8,
+      $("#movingbar"),
+      "background-color",
+      false
+    );
+    linearlyChangeRGB(
+      colorScheme[1],
+      animTime / 8,
+      $("#logo-svg-V"),
+      "fill",
+      true
+    );
     // Get current position of logo
     var currentLogoLeft = parseFloat($("#logo").css("left"));
     var sign = "-";
@@ -660,7 +696,10 @@ function hoverArrow(
   $(".arrows :animated").stop(true);
   if (!reverseFlag) {
     // Get difference in stroke-width and font-weight to subtract
-    var diffStrokeWidth = initialStrokeWidth + 50 - parseInt($(`.arrow${arrowDirection}Container`).css("stroke-width"));
+    var diffStrokeWidth =
+      initialStrokeWidth +
+      50 -
+      parseInt($(`.arrow${arrowDirection}Container`).css("stroke-width"));
     $(`.arrow${arrowDirection}Container`).css("cursor", "pointer");
     $(`.arrow${arrowDirection}Polygon`).animate(
       {
@@ -672,8 +711,10 @@ function hoverArrow(
         complete: () => {},
       }
     );
-    if(arrowDirection == "Right") {
-      var diffRightShift = parseInt(window.innerWidth / 100) - parseInt($(`.arrow${arrowDirection}Container`).css("right"));
+    if (arrowDirection == "Right") {
+      var diffRightShift =
+        parseInt(window.innerWidth / 100) -
+        parseInt($(`.arrow${arrowDirection}Container`).css("right"));
       $(`.arrow${arrowDirection}Container`).animate(
         {
           right: `-=${diffRightShift}`,
@@ -685,7 +726,9 @@ function hoverArrow(
         }
       );
     } else {
-      var diffLeftShift = parseInt(window.innerWidth / 100) - parseInt($(`.arrow${arrowDirection}Container`).css("left"));
+      var diffLeftShift =
+        parseInt(window.innerWidth / 100) -
+        parseInt($(`.arrow${arrowDirection}Container`).css("left"));
       $(`.arrow${arrowDirection}Container`).animate(
         {
           left: `-=${diffLeftShift}`,
@@ -699,7 +742,9 @@ function hoverArrow(
     }
   } else {
     // Get difference in stroke-width and font-weight to subtract
-    var diffStrokeWidth = parseInt($(`.arrow${arrowDirection}Polygon`).css("stroke-width")) - initialStrokeWidth;
+    var diffStrokeWidth =
+      parseInt($(`.arrow${arrowDirection}Polygon`).css("stroke-width")) -
+      initialStrokeWidth;
     $(`.arrow${arrowDirection}Container`).css("cursor", "default");
     $(`.arrow${arrowDirection}Polygon`).animate(
       {
@@ -711,8 +756,10 @@ function hoverArrow(
         complete: () => {},
       }
     );
-    if(arrowDirection == "Right") {
-      var currRightShift = parseInt($(`.arrow${arrowDirection}Container`).css("right"));
+    if (arrowDirection == "Right") {
+      var currRightShift = parseInt(
+        $(`.arrow${arrowDirection}Container`).css("right")
+      );
       $(`.arrow${arrowDirection}Container`).animate(
         {
           right: `-=${currRightShift}`,
@@ -724,7 +771,9 @@ function hoverArrow(
         }
       );
     } else {
-      var currLeftShift = parseInt($(`.arrow${arrowDirection}Container`).css("left"));
+      var currLeftShift = parseInt(
+        $(`.arrow${arrowDirection}Container`).css("left")
+      );
       $(`.arrow${arrowDirection}Container`).animate(
         {
           left: `-=${currLeftShift}`,
@@ -969,26 +1018,34 @@ function firstLoadIndexAnimation(reverseFlag) {
 ---------------------------------- NAVIGATION ------------------------------------
 ------------------------------------------------------------------------------- */
 function changeSubmenuAnimation(
-  oldClass,
-  newClass,
+  oldClassNo,
+  newClassNo,
+  colorScheme,
   indexFlag,
   reverseDirFlag = false
 ) {
   /*
-  Params:   oldClass:         The (additional) class of ALL elements that belong to the menu/content that will be faded out
+  Params:   oldClassNo:         The (additional) class of ALL elements that belong to the menu/content that will be faded out
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
-            newClass:         The (additional) class of ALL elements that belong to the menu/content that will be faded in
+                              --> Parameter: INTEGER (e.g. "0" for Grouped Class "GC0")
+            newClassNo:         The (additional) class of ALL elements that belong to the menu/content that will be faded in
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
+                              --> Parameter: INTEGER (e.g. "1" for Grouped Class "GC1")
+            colorScheme:      The in EJS selected/generated color scheme
   Flags:    indexFlag:        If true, adapts animation for the transition INDEX -> SUBMENU (or vice versa if reverseDirFlag = true)
             reverseDirFlag:   If false:   Anim direction: Left -> Right
                               If true:    Anim direction: Right -> Left
   Action:                     Plays the animation required to change submenus
   Returns:                    -
   */
+  // Assign class names to integers
+  var oldClass = `GC${oldClassNo}`;
+  var newClass = `GC${newClassNo}`;
+  // Define animation time
   const animTimeLogo = 1000;
   const animTimeMove = animTimeLogo * 2;
   // 0. Fade out explore button (if index) or arrow buttons (if other)
-  if(indexFlag && !reverseDirFlag) {
+  if (indexFlag && !reverseDirFlag) {
     $(".explore").animate(
       {
         opacity: "-=1",
@@ -1021,9 +1078,14 @@ function changeSubmenuAnimation(
       }
     );
   }
-  
+
   // 1. Move logo out of screen
   // -------------------------------------------
+  const colorSchemeIndex = newClassNo + 2; // Get color of subdivision for background
+  // Set color to standard background color if going back to index page
+  if (indexFlag && reverseDirFlag) {
+    colorSchemeIndex = 0;
+  }
   var amountToMove = window.innerWidth;
   // If reverse direction, negate amount to move.
   if (reverseDirFlag) {
@@ -1060,6 +1122,14 @@ function changeSubmenuAnimation(
         // Place new contents out of screen, so they can be moved in along with other animation
         // -------------------------------------------
         if (prog >= 0.5 && firstProgRead) {
+          // Change background colors
+          linearlyChangeRGB(
+            colorScheme[colorSchemeIndex],
+            animTimeMove * 0.5,
+            $("html"),
+            "background-color",
+            false
+          );
           firstProgRead = false; // Progress has been read once above 0.5
           $(`.${newClass}`).css("position", "relative");
           $(`.${newClass}`).animate(
@@ -1117,39 +1187,39 @@ function changeSubmenuAnimation(
                 $(`.${oldClass}`).css("left", 0);
                 // 4. Fade in left/right arrows or explore arrow
                 // -------------------------------------------
-                if(indexFlag && reverseDirFlag) {
-                  $('.explore').animate(
+                if (indexFlag && reverseDirFlag) {
+                  $(".explore").animate(
                     {
-                      opacity: "+=1"
+                      opacity: "+=1",
                     },
                     {
                       duration: 500,
                       easing: "swing",
-                      complete: () => {}
+                      complete: () => {},
                     }
                   );
                 } else {
                   $(`#${newClass}-arrowLeft`).animate(
                     {
-                      opacity: "+=1"
+                      opacity: "+=1",
                     },
                     {
                       duration: 500,
                       easing: "swing",
-                      complete: () => {}
+                      complete: () => {},
                     }
                   );
                   $(`#${newClass}-arrowRight`).animate(
                     {
-                      opacity: "+=1"
+                      opacity: "+=1",
                     },
                     {
                       duration: 500,
                       easing: "swing",
-                      complete: () => {}
+                      complete: () => {},
                     }
                   );
-                };
+                }
               },
             }
           );

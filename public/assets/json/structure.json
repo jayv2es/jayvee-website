@@ -1,29 +1,29 @@
 [
   {
     "_id": "641379425ecf18da4b60da94",
-    "indexTitle": "HI THERE!",
-    "indexIntro": "Welcome to my personal website! Feel free to explore my work or to get to know me better on my profile page. Peace!",
+    "indexTitle": "LET'S THINK BIG!",
+    "indexIntro": "Need a website or a logo for your company, a personalised gift card for your loved ones or an image film for your sports club? No matter what, we got you covered with our visual solutions for everyone!",
     "indexMenu": [
       {
-        "divisionTitle": "PROFILE",
-        "divisionIntro": "Let's get to know each other!",
+        "divisionTitle": "GRAPHICS",
+        "divisionIntro": "From logo designs and corporate identites to data visualization and infographics: A thought-through design just makes everything look better!",
         "divisionMenu": [],
         "_id": "641379425ecf18da4b60da95"
       },
       {
-        "divisionTitle": "EDU",
+        "divisionTitle": "VIDEO",
         "divisionIntro": " ",
         "divisionMenu": [],
         "_id": "641379425ecf18da4b60da96"
       },
       {
-        "divisionTitle": "CREATIVE",
+        "divisionTitle": "WEB",
         "divisionIntro": " ",
         "divisionMenu": [],
         "_id": "641379425ecf18da4b60da97"
       },
       {
-        "divisionTitle": "CONTACT",
+        "divisionTitle": "MISC",
         "divisionIntro": " ",
         "divisionMenu": [],
         "_id": "641379425ecf18da4b60da98"
