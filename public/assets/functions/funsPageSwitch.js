@@ -39,6 +39,12 @@ function changeSubmenuAnimation(
     $(`#${oldClass}-arrowRight-container`).off("click");
   }
   // 0. Fade out explore button (if index) or arrow buttons (if other)
+  if(reverseFlag) {
+    // Change classes if reverse direction
+    var tempClass = oldClass;
+    oldClass = newClass;
+    newClass = tempClass;
+  }
   if (indexFlag && !reverseFlag) {
     $(".explore").off("click");
     $(".explore").animate(
@@ -54,20 +60,20 @@ function changeSubmenuAnimation(
   } else {
     $(`#${oldClass}-arrowLeft`).animate(
       {
-        opacity: "-=1",
+        opacity: "-=0.1",
       },
       {
-        duration: animTimeLogo / 4,
+        duration: 500,
         easing: "swing",
         complete: () => {},
       }
     );
     $(`#${oldClass}-arrowRight`).animate(
       {
-        opacity: "-=1",
+        opacity: "-=0.1",
       },
       {
-        duration: animTimeLogo / 4,
+        duration: 500,
         easing: "swing",
         complete: () => {},
       }
@@ -81,19 +87,20 @@ function changeSubmenuAnimation(
   if (indexFlag && reverseFlag) {
     colorSchemeIndex = 0;
   }
-  var amountToMove = window.innerWidth;
+  // Define amounts to move for contents and 1st/2nd part of logo anim
+  var amountToMove_contents = window.innerWidth;
+  var amountToMove_logo_1st = window.innerWidth*0.25;
+  var amountToMove_logo_2nd = window.innerWidth*(0.25 + (2*1.389 + 1.5*9.56778)/100);
   // If reverse direction, negate amount to move.
   if (reverseFlag) {
-    amountToMove = -amountToMove;
-    // Change classes if reverse direction
-    var tempClass = oldClass;
-    oldClass = newClass;
-    newClass = tempClass;
+    amountToMove_contents = -amountToMove_contents;
+    amountToMove_logo_1st = -amountToMove_logo_1st;
+    amountToMove_logo_2nd = -amountToMove_logo_2nd;
   }
   // Animation
   $("#logo").animate(
     {
-      left: `+=${amountToMove / 4}px`,
+      left: `+=${amountToMove_logo_1st}px`,
     },
     {
       duration: animTimeLogo,
@@ -107,7 +114,7 @@ function changeSubmenuAnimation(
   // Movingbar animation
   $("#movingbar").animate(
     {
-      left: `+=${amountToMove / 4}px`,
+      left: `+=${amountToMove_logo_1st}px`,
     },
     {
       duration: animTimeLogo,
@@ -129,7 +136,7 @@ function changeSubmenuAnimation(
           $(`.${newClass}`).css("position", "relative");
           $(`.${newClass}`).animate(
             {
-              left: `+=${amountToMove}px`,
+              left: `+=${amountToMove_contents}px`,
             },
             {
               duration: 0,
@@ -141,7 +148,7 @@ function changeSubmenuAnimation(
           // -------------------------------------------
           $("#logo").animate(
             {
-              left: `-=${amountToMove / 4}px`,
+              left: `-=${amountToMove_logo_2nd}px`,
             },
             {
               duration: animTimeMove * 0.75,
@@ -151,7 +158,7 @@ function changeSubmenuAnimation(
           );
           $("#movingbar").animate(
             {
-              left: `-=${amountToMove / 4}px`,
+              left: `-=${amountToMove_logo_2nd}px`,
             },
             {
               duration: animTimeMove * 0.75,
@@ -161,7 +168,7 @@ function changeSubmenuAnimation(
           );
           $(`.${newClass}`).animate(
             {
-              left: `-=${amountToMove}px`,
+              left: `-=${amountToMove_contents}px`,
             },
             {
               duration: animTimeMove,
@@ -175,17 +182,21 @@ function changeSubmenuAnimation(
           console.log("Check 1: " + enteredCallback);
           $(`.${oldClass}`).animate(
             {
-              left: `-=${amountToMove}px`,
+              left: `-=${amountToMove_contents}px`,
             },
             {
               duration: animTimeMove,
               easing: "swing",
               complete: () => {
                 if (true) {
+                  // 4. Once finished, fix the logo in terms of vw at this point so it scales correctly when resizing
+                  $('#logo').css("left", `${ parseInt($('#logo').css("left"))/window.innerWidth*100 }vw`);
+                  $('#movingbar').css("left", `${ parseInt($('#movingbar').css("left"))/window.innerWidth*100 }vw`);
+                  // -------------------------------------------
                   // Fade out and reposition old class
                   $(`.${oldClass}`).hide();
                   $(`.${oldClass}`).css("left", 0);
-                  // 4. Fade in left/right arrows or explore arrow
+                  // 5. Fade in left/right arrows or explore arrow
                   // -------------------------------------------
                   if (indexFlag && reverseFlag && !enteredCallback) {
                     enteredCallback = true;
@@ -327,26 +338,40 @@ function changeSubmenuAnimation(
                       }
                     );
                   } else {
-                    $(`#${newClass}-arrowLeft`).animate(
-                      {
-                        opacity: "+=1",
-                      },
-                      {
-                        duration: 500,
-                        easing: "swing",
-                        complete: () => {},
+                    if(!enteredCallback) {
+                      $(`#${newClass}-arrowLeft`).animate(
+                        {
+                          opacity: "+=0.1",
+                        },
+                        {
+                          duration: 500,
+                          easing: "swing",
+                          complete: () => {},
+                        }
+                      );
+                      $(`#${newClass}-arrowRight`).animate(
+                        {
+                          opacity: "+=0.1",
+                        },
+                        {
+                          duration: 500,
+                          easing: "swing",
+                          complete: () => {},
+                        }
+                      );
+                      // Play Lottie animation
+                      if(reverse) {
+                        // Switch class numbers for path-shortcut below to work
+                        newClassNo = oldClassNo;
                       }
-                    );
-                    $(`#${newClass}-arrowRight`).animate(
-                      {
-                        opacity: "+=1",
-                      },
-                      {
-                        duration: 500,
-                        easing: "swing",
-                        complete: () => {},
-                      }
-                    );
+                      const svgAnim = bodymovin.loadAnimation({
+                        path: `./../icons/anims/anim${newClassNo}.json`,
+                        container: document.getElementById(/* Add container id */),
+                        autoplay: true,
+                        loop: false,
+                        // further options -> https://lottiefiles.com/tutorials/how-to-add-lottie-animations-to-html-xYQ-HdVfBSA
+                      })
+                    }
                   }
                 }
               },
