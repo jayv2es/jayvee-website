@@ -7,7 +7,13 @@
  ------------------------------------------------------------------------------- */
 
 //Import own functions
-const fun = require("./public/assets/functions/functions.js");
+const funAAE = require("./public/assets/functions/funsArrowsAndExplore.js");
+const funBu = require("./public/assets/functions/funsButtons.js");
+const funCo = require("./public/assets/functions/funsColors");
+const funHe = require("./public/assets/functions/funsHelpers");
+const funIP = require("./public/assets/functions/funsIndexPage");
+const funPS = require("./public/assets/functions/funsPageSwitch");
+const funSB = require("./public/assets/functions/funsSelectionBoxes");
 
 //Declare packages used
 const $ = require("jquery");

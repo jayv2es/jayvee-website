@@ -1,8 +1,6 @@
 /* -------------------------------------------------------------------------------
 --------------------------- SELECTION BOX FUNCTIONS ------------------------------
 ------------------------------------------------------------------------------- */
-const { css } = require("jquery");
-
 function expandSelectionBox(
   element,
   strHeader,
@@ -195,6 +193,7 @@ function resetSelectionBox(element, colorScheme, initialFlexBasis) {
 /* -------------------------------------------------------------------------------
 ------------------------------------ EXPORT --------------------------------------
 ------------------------------------------------------------------------------- */
+
 window.expandSelectionBox = expandSelectionBox;
 window.contractSelectionBox = contractSelectionBox;
 window.resetSelectionBox = resetSelectionBox;
