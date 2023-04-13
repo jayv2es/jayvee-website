@@ -378,8 +378,8 @@ function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
 /* -------------------------------------------------------------------------------
 ------------------------------------ EXPORT --------------------------------------
 ------------------------------------------------------------------------------- */
-
+/*
 window.firstLoadIndexAnimation = firstLoadIndexAnimation;
 window.clickThemeChange = clickThemeChange;
 window.hoverMenupoint = hoverMenupoint;
-
+*/

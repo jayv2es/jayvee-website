@@ -169,9 +169,10 @@ function linearlyChangeRGB(
 /* -------------------------------------------------------------------------------
 ------------------------------------ EXPORT --------------------------------------
 ------------------------------------------------------------------------------- */
-
+/*
 window.RGBtoHEX = RGBtoHEX;
 window.RGBAtoRGB = RGBAtoRGB;
 window.loadColorTheme = loadColorTheme;
 window.initializeCSSColorTheme = initializeCSSColorTheme;
 window.linearlyChangeRGB = linearlyChangeRGB;
+*/

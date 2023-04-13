@@ -193,7 +193,8 @@ function resetSelectionBox(element, colorScheme, initialFlexBasis) {
 /* -------------------------------------------------------------------------------
 ------------------------------------ EXPORT --------------------------------------
 ------------------------------------------------------------------------------- */
-
+/*
 window.expandSelectionBox = expandSelectionBox;
 window.contractSelectionBox = contractSelectionBox;
 window.resetSelectionBox = resetSelectionBox;
+*/

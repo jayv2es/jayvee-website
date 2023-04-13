@@ -49,8 +49,9 @@ function getCookie(cname) {
 /* -------------------------------------------------------------------------------
 ------------------------------------ EXPORT --------------------------------------
 ------------------------------------------------------------------------------- */
-
+/*
 window.isoStringToDate = isoStringToDate;
 window.writeFileCallback = writeFileCallback;
 window.setCookie = setCookie;
 window.getCookie = getCookie;
+*/

@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* --------------------------------------------------------
+-------------------------- INIT --------------------------- 
+-------------------------------------------------------- */
+
+html,
+body {
+  background-size: auto 100vw;
+  overflow: hidden;
+  margin: 0;
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+}
+
+/* --------------------------------------------------------
+-------------------------- GRID --------------------------- 
+-------------------------------------------------------- */
+
+.grid-container {
+  height: 100vh;
+  display: grid;
+  /* FALLBACK VALUE (not all browsers support min) */
+  grid-template-columns: repeat(9, 1.389vw 9.56778vw) 1.389vw;
+  grid-template-rows: repeat(10, 1.852vh 7.9628vh) 1.852vh;
+  /* TO-BE-USED VALUE (overwriting the fallback) */
+  grid-template-columns: repeat(9, max(1.389vw, 10px) 9.56778vw) max(
+      1.389vw,
+      10px
+    );
+  grid-template-rows: repeat(10, max(1.852vh, 10px) 7.9628vh) max(1.852vh, 10px);
+}

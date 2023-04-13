@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* -------------------------------------------------------------------------------
+-------------------------------------- LOGO --------------------------------------
+------------------------------------------------------------------------------- */
+
+div.logo {
+  grid-row: 8/15;
+  grid-column: 4/17;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  left: 0; /*Start value; Animated in hoverMenupoint*/
+}
+
+.logo-svg {
+  height: 100%;
+  z-index: 2;
+}
+
+/* -------------------------------------------------------------------------------
+------------------------------------ MOVINGBAR -----------------------------------
+------------------------------------------------------------------------------- */
+
+div.movingbar-container {
+  grid-row: 14/15;
+  grid-column: 1/20;
+  position: relative;
+  z-index: 1;
+}
+
+div.movingbar {
+  height: 38.3%;
+  bottom: 0;
+  position: absolute;
+  border-radius: 3.2vh;
+  width: 200vw;
+  transform: translateX(-150vw);
+
+  left: -2vw; /*Start value; Animated in moveLogoToMenupoint*/
+}

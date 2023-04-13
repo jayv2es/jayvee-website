@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* --------------------------------------------------------
+---------------------- TITLE + INTRO ---------------------- 
+-------------------------------------------------------- */
+
+.divTitle {
+  grid-row: 2/3;
+  grid-column: 8/13;
+  position: relative;
+  height: 100%;
+}
+.divTitleText {
+  text-align: center;
+  font-weight: 800;
+  font-size: 35px;
+  margin: 0;
+  transform: translateY(30%);
+}
+.divIntroText {
+  text-align: center;
+  font-size: 15px;
+  position: relative;
+  top: 20px;
+  left: 0;
+  margin: 0;
+}
+
+/* --------------------------------------------------------
+------------------------- BUTTON -------------------------- 
+-------------------------------------------------------- */
+
+.divButtonContainer {
+  grid-row: 18/19;
+  grid-column: 4/17;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.divButton {
+  height: 4vh;
+  width: 20vh;
+  min-height: 20px;
+  min-width: 100px;
+  border: 0.5vh solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.divButtonText {
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0;
+  text-align: center;
+}
