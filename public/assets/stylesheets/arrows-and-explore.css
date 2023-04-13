@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* -------------------------------------------------------------------------------
+------------------------------------- ARROWS -------------------------------------
+------------------------------------------------------------------------------- */
+
+.arrows {
+  grid-row: 16/21;
+  grid-column: 4/17;
+  height: 50%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  transform: translateY(50%);
+  z-index: 0;
+}
+
+.arrowLeftContainer {
+  height: 100%;
+  width: 5%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  position: relative;
+}
+.arrowLeft {
+  height: 75%;
+  z-index: 2;
+  transform: scaleX(-1);
+  opacity: 0; /* Animated in functions.js */
+}
+
+.arrowRightContainer {
+  height: 100%;
+  width: 5%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  position: relative;
+}
+.arrowRight {
+  height: 75%;
+  z-index: 2;
+  opacity: 0; /* Animated in functions.js */
+}
+
+/* -------------------------------------------------------------------------------
+------------------------------------ EXPLORE -------------------------------------
+------------------------------------------------------------------------------- */
+
+div.explore {
+  grid-row: 10/13;
+  grid-column: 16/17;
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+}
+
+.exploreArrowDiv {
+  height: 100%;
+  width: 20%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.exploreArrow {
+  height: 75%;
+  z-index: 2;
+}
+
+.exploreTextDiv {
+  transform: translateY(50%);
+  height: 50%;
+  width: 80%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.exploreText {
+  position: relative;
+  text-align: right;
+  line-height: 95%;
+  font-weight: 300;
+  font-size: larger;
+}

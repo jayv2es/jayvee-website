@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* --------------------------------------------------------
+------------------- TITLE AND SUBTITLE -------------------- 
+-------------------------------------------------------- */
+div.title {
+  grid-row: 2/3;
+  grid-column: 4/9;
+  height: 100%;
+  position: relative;
+  transform: translateY(40%);
+}
+
+.h1title {
+  font-weight: 800;
+  line-height: 100%;
+  position: relative;
+  left: 0;
+  top: 0;
+  font-size: 35px;
+}
+
+.pintro {
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 130%;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+/* --------------------------------------------------------
+-------------------------- MENU --------------------------- 
+-------------------------------------------------------- */
+
+div.menu {
+  grid-row: 18/19;
+  grid-column: 4/17;
+  position: relative;
+  /* Following two lines needed to have same whitespaces between each title*/
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------
+------------------- SOCIALS + OPTIONS  -------------------- 
+-------------------------------------------------------- */
+
+div.butOptions {
+  grid-row: 4/5;
+  grid-column: 12/17;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.butOptionIcon {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.butSocials {
+  grid-row: 2/3;
+  grid-column: 12/17;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  transform: translateY(50%);
+}
+
+.butSocial,
+.butOption {
+  flex-basis: 3.5vh;
+  height: 3.5vh;
+  min-height: 20px;
+  min-width: 20px;
+  margin-left: 2vh;
+  border: 0.3vh solid;
+  float: right;
+  background-color: transparent;
+}
+
+.bS3,
+.bO6 {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+

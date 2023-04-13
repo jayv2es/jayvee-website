@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* --------------------------------------------------------
+--------------------- LOADINGSCREEN ----------------------- 
+-------------------------------------------------------- */
+
+.loadingscreen {
+  grid-row: 10/13;
+  grid-column: 4/17;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  line-height: 100%;
+  font-size: 900%;
+  font-weight: 800;
+}

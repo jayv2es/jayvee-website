@@ -7,7 +7,13 @@
  ------------------------------------------------------------------------------- */
 
 //Import own functions
-const fun = require("./public/assets/functions/functions.js");
+const funAAE = require("./public/assets/functions/funsArrowsAndExplore.js");
+const funBu = require("./public/assets/functions/funsButtons.js");
+const funCo = require("./public/assets/functions/funsColors");
+const funHe = require("./public/assets/functions/funsHelpers");
+const funIP = require("./public/assets/functions/funsIndexPage");
+const funPS = require("./public/assets/functions/funsPageSwitch");
+const funSB = require("./public/assets/functions/funsSelectionBoxes");
 
 //Declare packages used
 const $ = require("jquery");
@@ -72,15 +78,13 @@ const colors = require("./models/colors.js");
 
 // Seperate case for landing page GET-req
 app.get("/", async (req, res) => {
-  
-  
   // ---------------------------------------------------------------------
   // ------------------ SET TO TRUE IF WORKING REMOTELY ------------------
   // ---------------------------------------------------------------------
   const workingRemotely = true;
   // REMOVE THE IF-ELSE CLAUSE IF NO MORE WORKING FROM REMOTE NEEDED
-  // Needed to work from CodeSandbox (since otherwise MongoDB times out)  
-  
+  // Needed to work from CodeSandbox (since otherwise MongoDB times out)
+
   if (!workingRemotely) {
     // Set up default mongoose connection on localhost
     var mongoDB = process.env.MONGODB_CONNECT_HTTPENCODE;
@@ -100,9 +104,11 @@ app.get("/", async (req, res) => {
   } else {
     // Assuming colors data stored in colorscheme.json and structure data in structure.JSON
     // NOTE: structure.json can be deleted after finishing working remotely, colorscheme.json not!
-    req.session.structureData = JSON.parse(fs.readFileSync("./public/assets/json/structure.json"));
+    req.session.structureData = JSON.parse(
+      fs.readFileSync("./public/assets/json/structure.json")
+    );
   }
-  
+
   res.render("index", {
     structureData: req.session.structureData,
   });
