@@ -14,6 +14,7 @@ const funHe = require("./public/assets/functions/funsHelpers");
 const funIP = require("./public/assets/functions/funsIndexPage");
 const funPS = require("./public/assets/functions/funsPageSwitch");
 const funSB = require("./public/assets/functions/funsSelectionBoxes");
+const lottie = require("./public/assets/scripts/lottie.js");
 
 //Declare packages used
 const $ = require("jquery");

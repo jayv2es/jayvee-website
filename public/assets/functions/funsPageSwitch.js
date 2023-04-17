@@ -1,10 +1,50 @@
 /* -------------------------------------------------------------------------------
 ---------------------------- PAGE SWITCH FUNCTIONS -------------------------------
 ------------------------------------------------------------------------------- */
+function initializeLottieAnimation(classNo, colorScheme) {
+  /*  
+  Params:   classNo:          The (additional) class of ALL elements that belong to the menu/content that will be faded out
+                              --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
+                              --> Parameter: INTEGER (e.g. "0" for Grouped Class "GC0")
+            colorScheme:      The in EJS selected/generated color scheme
+  Flags:                      -
+  Action:                     Initializes a lottie animation of a given GC in the desired color scheme
+  Returns:                    -
+
+          !!! IMPORTANT !!!
+          -----------------
+          In AE, the "Fill N" properties of each shape (dt. "Fläche N") needs to be renamed (press enter) into ".divAnimationFill".
+          This CAN'T be done by simply adding a .cl = ".divAnimationFill" to the JS code (tried).
+  */
+  // Change colors of animation
+  $('.divAnimationFill').css("fill", `rgb(${colorScheme[1][0]},${colorScheme[1][1]},${colorScheme[1][2]})`);
+  // Extract SVG from animation container
+  var svgAnim = document.querySelector(`#GC${classNo}-animation svg`);
+  if(svgAnim) {
+    svgAnim.style.margin = "0";
+    svgAnim.style.display = "flex";
+    svgAnim.style.justifyContent = "left";
+    svgAnim.style.transform = "translateX(-2%)";
+    // Exctract grid height and aspect ratio of svg
+    var aspectRatio = svgAnim.getAttribute("width")/svgAnim.getAttribute("height");
+    var gridHeight = ($('.grid-container').css("grid-template-rows")).match(/[-+]?\d*\.*\d+/g).map(parseFloat)[1];
+    svgAnim.style.height = `${gridHeight/window.innerHeight*100}vh`;
+    svgAnim.style.width = `${gridHeight*aspectRatio/window.innerWidth*100}vw`;
+    // Recalculate on resize
+    $(window).on("resize", () => {
+      var aspectRatio = svgAnim.getAttribute("width")/svgAnim.getAttribute("height");
+      var gridHeight = ($('.grid-container').css("grid-template-rows")).match(/[-+]?\d*\.*\d+/g).map(parseFloat)[1];
+      svgAnim.style.height = `${gridHeight/window.innerHeight*100}vh`;
+      svgAnim.style.width = `${gridHeight*aspectRatio/window.innerWidth*100}vw`;
+    })
+  }
+};
+
 function changeSubmenuAnimation(
   oldClassNo,
   newClassNo,
   colorScheme,
+  anims,
   indexFlag,
   reverseFlag = false
 ) {
@@ -16,6 +56,7 @@ function changeSubmenuAnimation(
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
                               --> Parameter: INTEGER (e.g. "1" for Grouped Class "GC1")
             colorScheme:      The in EJS selected/generated color scheme
+            anims:            Array of the lottie animation objects, i.e. [lottieAnim1, ..., lottieAnim4]
   Flags:    indexFlag:        If true, adapts animation for the transition INDEX -> SUBMENU (or vice versa if reverseFlag = true)
             reverseFlag:   If false:   Anim direction: Left -> Right
                               If true:    Anim direction: Right -> Left
@@ -58,12 +99,13 @@ function changeSubmenuAnimation(
       }
     );
   } else {
+    // Fade out arrows
     $(`#${oldClass}-arrowLeft`).animate(
       {
         opacity: "-=0.1",
       },
       {
-        duration: 500,
+        duration: animTimeLogo / 4,
         easing: "swing",
         complete: () => {},
       }
@@ -73,11 +115,19 @@ function changeSubmenuAnimation(
         opacity: "-=0.1",
       },
       {
-        duration: 500,
+        duration: animTimeLogo / 4,
         easing: "swing",
         complete: () => {},
       }
     );
+    // Fade out current content before playing animation
+    $(`.${oldClass}`).animate({
+      opacity: "-=1",
+    },{
+      duration: animTimeLogo / 3,
+      easing: "swing",
+      complete: () => {}
+    });
   }
 
   // 1. Move logo out of screen
@@ -142,6 +192,24 @@ function changeSubmenuAnimation(
               duration: 0,
             }
           );
+          // Reset opacity in current content before playing animation...
+          $(`.${newClass}`).animate({
+            opacity: "+=1",
+          },{
+            duration: 0,
+            easing: "swing",
+            complete: () => {}
+          });
+          // ...except for explore-Button if necessary.
+          if(indexFlag && reverseFlag) {
+            $(`.explore`).animate({
+              opacity: "-=1",
+            },{
+              duration: 0,
+              easing: "swing",
+              complete: () => {}
+            });
+          };
           $(`.${newClass}`).show();
           // 3. Move content to the opposite side along with logo,
           //    so it looks like the observer moves to the right
@@ -179,7 +247,6 @@ function changeSubmenuAnimation(
           // Define flag to avoid loops in complete-callback
           // DEBUG measure: For some reason loops through the callback
           let enteredCallback = false;
-          console.log("Check 1: " + enteredCallback);
           $(`.${oldClass}`).animate(
             {
               left: `-=${amountToMove_contents}px`,
@@ -196,10 +263,19 @@ function changeSubmenuAnimation(
                   // Fade out and reposition old class
                   $(`.${oldClass}`).hide();
                   $(`.${oldClass}`).css("left", 0);
-                  // 5. Fade in left/right arrows or explore arrow
+                  // Reset animation
+                  if(!reverseFlag) {
+                    if(!indexFlag) {
+                      anims[oldClassNo-1].goToAndStop(0, true);
+                    }
+                  } else {
+                    anims[newClassNo-1].goToAndStop(0, true);
+                  }
+                  // 5. Fade in left/right arrows or explore arrow and play animation
                   // -------------------------------------------
                   if (indexFlag && reverseFlag && !enteredCallback) {
                     enteredCallback = true;
+                    // Fade in arrows
                     $(".explore").animate(
                       {
                         opacity: "+=1",
@@ -285,60 +361,72 @@ function changeSubmenuAnimation(
                               (reverseFlag = true)
                             );
                           });
-                          $("#explore").click(() => {
+                          console.log("Initialize explore.")
+                          $("#explore").on("click", () => {
                             changeSubmenuAnimation(
                               0,
                               1,
                               colorScheme,
+                              anims,
                               true,
                               false
                             );
                           });
-                          // Set the right oldClassNo and newClassNo for reactivating, depending on direction
-                          if (!reverseFlag) {
-                            $(`#${oldClass}-arrowLeft-container`).click(() => {
-                              changeSubmenuAnimation(
-                                oldClassNo - 1,
-                                oldClassNo,
-                                colorScheme,
-                                indexFlag,
-                                true
-                              );
-                            });
-                            $(`#${oldClass}-arrowRight-container`).click(() => {
-                              changeSubmenuAnimation(
-                                oldClassNo,
-                                newClassNo,
-                                colorScheme,
-                                false,
-                                false
-                              );
-                            });
-                          } else {
-                            $(`#${oldClass}-arrowLeft-container`).click(() => {
-                              changeSubmenuAnimation(
-                                oldClassNo,
-                                newClassNo,
-                                colorScheme,
-                                indexFlag,
-                                true
-                              );
-                            });
-                            $(`#${oldClass}-arrowRight-container`).click(() => {
-                              changeSubmenuAnimation(
-                                newClassNo,
-                                newClassNo + 1,
-                                colorScheme,
-                                false,
-                                false
-                              );
-                            });
-                          }
                         },
                       }
                     );
                   } else {
                     if(!enteredCallback) {
+                      enteredCallback = true;
+                      // Set the right oldClassNo and newClassNo for reactivating, depending on direction
+                      if (!reverseFlag) {
+                        // Play animation
+                        anims[newClassNo-1].play();
+                        console.log("Initialize arrows: oldClassNo = " + oldClassNo + ", newClassNo = " + newClassNo);
+                        $(`#${newClass}-arrowLeft-container`).on("click", () => {
+                          console.log("Arrow left clicked");
+                          changeSubmenuAnimation(
+                            oldClassNo,
+                            oldClassNo + 1,
+                            colorScheme,
+                            anims,
+                            indexFlag,
+                            true
+                          );
+                        });
+                        $(`#${newClass}-arrowRight-container`).on("click", () => {
+                          changeSubmenuAnimation(
+                            oldClassNo + 1,
+                            newClassNo + 1,
+                            colorScheme,
+                            anims,
+                            false,
+                            false
+                          );
+                        });
+                      } else {
+                        anims[oldClassNo-1].play();
+                        $(`#${oldClass}-arrowLeft-container`).on("click", () => {
+                          changeSubmenuAnimation(
+                            oldClassNo,
+                            newClassNo,
+                            colorScheme,
+                            anims,
+                            indexFlag,
+                            true
+                          );
+                        });
+                        $(`#${oldClass}-arrowRight-container`).on("click", () => {
+                          changeSubmenuAnimation(
+                            newClassNo,
+                            newClassNo + 1,
+                            colorScheme,
+                            anims,
+                            false,
+                            false
+                          );
+                        });
+                      }
                       $(`#${newClass}-arrowLeft`).animate(
                         {
                           opacity: "+=0.1",
@@ -359,18 +447,6 @@ function changeSubmenuAnimation(
                           complete: () => {},
                         }
                       );
-                      // Play Lottie animation
-                      if(reverse) {
-                        // Switch class numbers for path-shortcut below to work
-                        newClassNo = oldClassNo;
-                      }
-                      const svgAnim = bodymovin.loadAnimation({
-                        path: `./../icons/anims/anim${newClassNo}.json`,
-                        container: document.getElementById(/* Add container id */),
-                        autoplay: true,
-                        loop: false,
-                        // further options -> https://lottiefiles.com/tutorials/how-to-add-lottie-animations-to-html-xYQ-HdVfBSA
-                      })
                     }
                   }
                 }
@@ -390,4 +466,5 @@ function changeSubmenuAnimation(
 ------------------------------------------------------------------------------- */
 /*
 window.changeSubmenuAnimation = changeSubmenuAnimation;
+window.initializeLottieAnimation = initializeLottieAnimation;
 */

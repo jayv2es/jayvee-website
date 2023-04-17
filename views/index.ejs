@@ -20,6 +20,7 @@
         <script src="/public/assets/functions/funsIndexPage.js" type="text/javascript"></script>
         <script src="/public/assets/functions/funsPageSwitch.js" type="text/javascript"></script>
         <script src="/public/assets/functions/funsSelectionBoxes.js" type="text/javascript"></script>
+        <script src="/public/assets/scripts/lottie.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="grid-container">
@@ -143,10 +144,20 @@
                     <%= structureData[0].indexMenu[0].divisionIntro %>
                 </p>
             </div>
+            <div class="GC1 divAnimationContainer" id="GC1-animation-container">
+                <div class="divAnimation" id="GC1-animation">
+                    <!-- EMPTY CONTAINER FOR LOTTIE ANIMATION -->
+                </div>
+            </div>
             <div class="GC1 divButtonContainer" id="GC1-button-container">
-                <div class="divButton" id="GC1-button">
-                    <p class="divButtonText" id="GC1-button-text">
-                        EXPLORE
+                <div class="divButton" id="GC1-button-1">
+                    <p class="divButtonText" id="GC1-button-1-text">
+                        PORTFOLIO
+                    </p>
+                </div>
+                <div class="divButton" id="GC1-button-2">
+                    <p class="divButtonText" id="GC1-button-2-text">
+                        OFFERS
                     </p>
                 </div>
             </div>
@@ -188,9 +199,9 @@
                 </p>
             </div>
             <div class="GC2 divButtonContainer" id="GC2-button-container">
-                <div class="divButton" id="GC2-button">
-                    <p class="divButtonText" id="GC2-button-text">
-                        EXPLORE
+                <div class="divButton divBut1" id="GC2-button-1">
+                    <p class="divButtonText" id="GC2-button-1-text">
+                        PORTFOLIO
                     </p>
                 </div>
             </div>
@@ -222,20 +233,36 @@
             // Prepare animation
             var xStart = window.innerWidth/4;
             window.firstLoadIndexAnimation(reverseFlag=true);
-            $(document).ready(() => {
+            document.addEventListener('DOMContentLoaded',  async function () {
                 // Initialize grouped classes CSS
                 $('.GC0').show();
                 $('.GC1').hide();
                 $('.GC2').hide();
                 $('.GC3').hide();
-
                 // Load color scheme
-                var colors;
-                console.log();
-                $.getJSON('/public/assets/json/colorscheme.json', colorsJSON => {
-                    colors = window.loadColorTheme(colorsJSON, "Light");
-                    window.initializeCSSColorTheme(colors);
-                    // LOADING SCREEN  
+                const colorsJSON = await $.getJSON('/public/assets/json/colorscheme.json');
+                // Initialize color theme
+                var colors = window.loadColorTheme(colorsJSON, "Light");
+                window.initializeCSSColorTheme(colors);
+                // Load lottie animations using dynamic variable assignments
+                var anims = [];
+                var lottieAnim1 = bodymovin.loadAnimation({
+                    path: `./public/assets/icons/anims/anim1.json`,
+                    container: document.getElementById(`GC1-animation`),
+                    renderer: 'svg',
+                    autoplay: false,
+                    loop: false
+                });
+                // Resolve promise when DOM of all animations loaded (specify async function to avoid too many callbacks)
+                lottieAnim1.addEventListener("DOMLoaded", async () => {
+                    initializeLottieAnimation(1, colors);
+                    anims.push(lottieAnim1);
+                    console.log(anims);           
+
+                    /* ----------------------------------------------------------------------
+                    ------------------- LOADING SCREEN CODE STARTS HERE ---------------------
+                    ---------------------------------------------------------------------- */ 
+
                     // Get the total number of resources on the page
                     var totalResources = $('*');
                     // Set the initial number of resources loaded to 0
@@ -243,7 +270,7 @@
                     // Set counters for animation
                     var percentageLoaded;
                     // For each resource that has to be loaded...
-                    $('*').each(function () {
+                    $('*').each(async function () {
                         // ...check if resource exists in the DOM, i.e. has been loaded.
                         // (If not, length = 0)
                         if($(this).length) {                            
@@ -314,30 +341,24 @@
                                     window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=false);
                                 });
                                 $('#explore').click(() => {
-                                    window.changeSubmenuAnimation(0, 1, colors, true, false);
+                                    window.changeSubmenuAnimation(0, 1, colors, anims, true, false);
                                 });
                                 $('#explore').mouseleave(() => {
                                     window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=true);
                                 });
 
-                                // ARROW ANIMATIONS
+                                // ARROW ANIMATIONS (on("click")-INTERACTIONS DEFINED RECURSIVELY IN changeSubmenuAnimation)
                                 // -----------------------------------------------------------------------
                                 // -----------------------------------------------------------------------
                                 const initialStrokeWidthArrow = parseInt($(".arrowLeftPolygon").css("stroke-width"));
                                 $('#GC1-arrowRight-container').mouseenter(() => {
                                     window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=false);
                                 });
-                                $('#GC1-arrowRight-container').click(() => {
-                                    window.changeSubmenuAnimation(1, 2, colors, false, false);
-                                });
                                 $('#GC1-arrowRight-container').mouseleave(() => {
                                     window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=true);
                                 });
                                 $('#GC1-arrowLeft-container').mouseenter(() => {
                                     window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=false);
-                                });
-                                $('#GC1-arrowLeft-container').click(() => {
-                                    window.changeSubmenuAnimation(0, 1, colors, true, true);
                                 });
                                 $('#GC1-arrowLeft-container').mouseleave(() => {
                                     window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=true);
@@ -363,6 +384,10 @@
                                 $('#bO5').click(() => {
                                     // Change color scheme
                                     colors = window.clickThemeChange($('#bO5'), 300, colorsJSON, "Dark", initialFlexBasis*$(window).height() / 100);
+                                    // Initialize additional CSS
+                                    for(let i=0; i<anims.length; i++) {
+                                        initializeLottieAnimation(i+1, colors);
+                                    }
                                 })
                                 $('#bO5').mouseleave(() => {
                                     window.contractSelectionBox($('#bO5'), 300, colors, initialFlexBasis*$(window).height() / 100);
@@ -383,6 +408,10 @@
                                 $('#bO6').click(() => {
                                     // Change color scheme
                                     colors = window.clickThemeChange($('#bO6'), 300, colorsJSON, "Light", initialFlexBasis*$(window).height() / 100);
+                                    // Initialize additional CSS
+                                    for(let i=0; i<anims.length; i++) {
+                                        initializeLottieAnimation(i+1, colors);
+                                    }
                                 })
                                 $('#bO6').mouseleave(() => {
                                     window.contractSelectionBox($('#bO6'), 300, colors, initialFlexBasis*$(window).height() / 100);
@@ -391,13 +420,19 @@
                                 // BUTTON INTERACTIONS
                                 // -----------------------------------------------------------------------
                                 // -----------------------------------------------------------------------
-                                $('.divButton').mouseenter(() => {
-                                    window.hoverButton($('.divButton'), colors, false);
+                                $('#GC1-button-1').mouseenter(() => {
+                                    window.hoverButton($('#GC1-button-1'), colors, false);
                                 });
-                                $('.divButton').mouseleave(() => {
-                                    window.hoverButton($('.divButton'), colors, true);
+                                $('#GC1-button-1').mouseleave(() => {
+                                    window.hoverButton($('#GC1-button-1'), colors, true);
                                 })
-    
+                                $('#GC1-button-2').mouseenter(() => {
+                                    window.hoverButton($('#GC1-button-2'), colors, false);
+                                });
+                                $('#GC1-button-2').mouseleave(() => {
+                                    window.hoverButton($('#GC1-button-2'), colors, true);
+                                });
+
                                 // GENERAL / ADDITIONAL
                                 // -----------------------------------------------------------------------
                                 // -----------------------------------------------------------------------
@@ -410,7 +445,7 @@
 
                             }
                         };
-                    })
+                    });
                 });
             })
         </script>
