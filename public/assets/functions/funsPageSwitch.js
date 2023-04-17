@@ -17,28 +17,43 @@ function initializeLottieAnimation(classNo, colorScheme) {
           This CAN'T be done by simply adding a .cl = ".divAnimationFill" to the JS code (tried).
   */
   // Change colors of animation
-  $('.divAnimationFill').css("fill", `rgb(${colorScheme[1][0]},${colorScheme[1][1]},${colorScheme[1][2]})`);
+  $(".divAnimationFill").css(
+    "fill",
+    `rgb(${colorScheme[1][0]},${colorScheme[1][1]},${colorScheme[1][2]})`
+  );
   // Extract SVG from animation container
   var svgAnim = document.querySelector(`#GC${classNo}-animation svg`);
-  if(svgAnim) {
+  if (svgAnim) {
     svgAnim.style.margin = "0";
     svgAnim.style.display = "flex";
     svgAnim.style.justifyContent = "left";
     svgAnim.style.transform = "translateX(-2%)";
     // Exctract grid height and aspect ratio of svg
-    var aspectRatio = svgAnim.getAttribute("width")/svgAnim.getAttribute("height");
-    var gridHeight = ($('.grid-container').css("grid-template-rows")).match(/[-+]?\d*\.*\d+/g).map(parseFloat)[1];
-    svgAnim.style.height = `${gridHeight/window.innerHeight*100}vh`;
-    svgAnim.style.width = `${gridHeight*aspectRatio/window.innerWidth*100}vw`;
+    var aspectRatio =
+      svgAnim.getAttribute("width") / svgAnim.getAttribute("height");
+    var gridHeight = $(".grid-container")
+      .css("grid-template-rows")
+      .match(/[-+]?\d*\.*\d+/g)
+      .map(parseFloat)[1];
+    svgAnim.style.height = `${(gridHeight / window.innerHeight) * 100}vh`;
+    svgAnim.style.width = `${
+      ((gridHeight * aspectRatio) / window.innerWidth) * 100
+    }vw`;
     // Recalculate on resize
     $(window).on("resize", () => {
-      var aspectRatio = svgAnim.getAttribute("width")/svgAnim.getAttribute("height");
-      var gridHeight = ($('.grid-container').css("grid-template-rows")).match(/[-+]?\d*\.*\d+/g).map(parseFloat)[1];
-      svgAnim.style.height = `${gridHeight/window.innerHeight*100}vh`;
-      svgAnim.style.width = `${gridHeight*aspectRatio/window.innerWidth*100}vw`;
-    })
+      var aspectRatio =
+        svgAnim.getAttribute("width") / svgAnim.getAttribute("height");
+      var gridHeight = $(".grid-container")
+        .css("grid-template-rows")
+        .match(/[-+]?\d*\.*\d+/g)
+        .map(parseFloat)[1];
+      svgAnim.style.height = `${(gridHeight / window.innerHeight) * 100}vh`;
+      svgAnim.style.width = `${
+        ((gridHeight * aspectRatio) / window.innerWidth) * 100
+      }vw`;
+    });
   }
-};
+}
 
 function changeSubmenuAnimation(
   oldClassNo,
@@ -80,7 +95,7 @@ function changeSubmenuAnimation(
     $(`#${oldClass}-arrowRight-container`).off("click");
   }
   // 0. Fade out explore button (if index) or arrow buttons (if other)
-  if(reverseFlag) {
+  if (reverseFlag) {
     // Change classes if reverse direction
     var tempClass = oldClass;
     oldClass = newClass;
@@ -121,26 +136,42 @@ function changeSubmenuAnimation(
       }
     );
     // Fade out current content before playing animation
-    $(`.${oldClass}`).animate({
-      opacity: "-=1",
-    },{
-      duration: animTimeLogo / 3,
-      easing: "swing",
-      complete: () => {}
-    });
+    $(`.${oldClass}`).animate(
+      {
+        opacity: "-=1",
+      },
+      {
+        duration: animTimeLogo / 3,
+        easing: "swing",
+        complete: () => {},
+      }
+    );
   }
 
   // 1. Move logo out of screen
   // -------------------------------------------
   var colorSchemeIndex = newClassNo + 1; // Get color of subdivision for background
+  if (reverseFlag) {
+    colorSchemeIndex = oldClassNo + 1;
+  }
   // Set color to standard background color if going back to index page
   if (indexFlag && reverseFlag) {
     colorSchemeIndex = 0;
   }
   // Define amounts to move for contents and 1st/2nd part of logo anim
+  // First for index animation
   var amountToMove_contents = window.innerWidth;
-  var amountToMove_logo_1st = window.innerWidth*0.25;
-  var amountToMove_logo_2nd = window.innerWidth*(0.25 + (2*1.389 + 1.5*9.56778)/100);
+  var amountToMove_logo_1st = window.innerWidth * 0.25;
+  var amountToMove_logo_2nd =
+    window.innerWidth * (0.25 + (2 * 1.389 + 1.5 * 9.56778) / 100);
+  // If not index animation, use different values
+  if (!indexFlag) {
+    amountToMove_contents = window.innerWidth;
+    amountToMove_logo_1st =
+      window.innerWidth * (0.25 + (2 * 1.389 + 1.5 * 9.56778) / 100);
+    amountToMove_logo_2nd =
+      window.innerWidth * (0.25 + (2 * 1.389 + 1.5 * 9.56778) / 100);
+  }
   // If reverse direction, negate amount to move.
   if (reverseFlag) {
     amountToMove_contents = -amountToMove_contents;
@@ -192,24 +223,45 @@ function changeSubmenuAnimation(
               duration: 0,
             }
           );
-          // Reset opacity in current content before playing animation...
-          $(`.${newClass}`).animate({
-            opacity: "+=1",
-          },{
-            duration: 0,
-            easing: "swing",
-            complete: () => {}
-          });
+          // Reset opacity of arrows
+          if (!(indexFlag && reverseFlag)) {
+            $(`#${newClass}-arrowLeft`).animate(
+              {
+                opacity: "-=0.1",
+              },
+              {
+                duration: 0,
+              }
+            );
+            $(`#${newClass}-arrowRight`).animate(
+              {
+                opacity: "-=0.1",
+              },
+              {
+                duration: 0,
+              }
+            );
+          }
+          // Set opacity of content to zero if reverse and not index
+          if (!indexFlag) {
+            if (reverseFlag) {
+              console.log("Resetting opacity of " + newClass);
+              $(`.${newClass}`).css("opacity", "0");
+            } else {
+              $(`.${newClass}`).css("opacity", "1");
+            }
+          }
           // ...except for explore-Button if necessary.
-          if(indexFlag && reverseFlag) {
-            $(`.explore`).animate({
-              opacity: "-=1",
-            },{
-              duration: 0,
-              easing: "swing",
-              complete: () => {}
-            });
-          };
+          if (indexFlag && reverseFlag) {
+            $(`.explore`).animate(
+              {
+                opacity: "-=1",
+              },
+              {
+                duration: 0,
+              }
+            );
+          }
           $(`.${newClass}`).show();
           // 3. Move content to the opposite side along with logo,
           //    so it looks like the observer moves to the right
@@ -257,19 +309,32 @@ function changeSubmenuAnimation(
               complete: () => {
                 if (true) {
                   // 4. Once finished, fix the logo in terms of vw at this point so it scales correctly when resizing
-                  $('#logo').css("left", `${ parseInt($('#logo').css("left"))/window.innerWidth*100 }vw`);
-                  $('#movingbar').css("left", `${ parseInt($('#movingbar').css("left"))/window.innerWidth*100 }vw`);
+                  $("#logo").css(
+                    "left",
+                    `${
+                      (parseInt($("#logo").css("left")) / window.innerWidth) *
+                      100
+                    }vw`
+                  );
+                  $("#movingbar").css(
+                    "left",
+                    `${
+                      (parseInt($("#movingbar").css("left")) /
+                        window.innerWidth) *
+                      100
+                    }vw`
+                  );
                   // -------------------------------------------
                   // Fade out and reposition old class
                   $(`.${oldClass}`).hide();
                   $(`.${oldClass}`).css("left", 0);
                   // Reset animation
-                  if(!reverseFlag) {
-                    if(!indexFlag) {
-                      anims[oldClassNo-1].goToAndStop(0, true);
+                  if (!reverseFlag) {
+                    if (!indexFlag) {
+                      anims[oldClassNo - 1].goToAndStop(0, true);
                     }
                   } else {
-                    anims[newClassNo-1].goToAndStop(0, true);
+                    anims[newClassNo - 1].goToAndStop(0, true);
                   }
                   // 5. Fade in left/right arrows or explore arrow and play animation
                   // -------------------------------------------
@@ -361,7 +426,7 @@ function changeSubmenuAnimation(
                               (reverseFlag = true)
                             );
                           });
-                          console.log("Initialize explore.")
+                          console.log("Initialize explore.");
                           $("#explore").on("click", () => {
                             changeSubmenuAnimation(
                               0,
@@ -376,56 +441,110 @@ function changeSubmenuAnimation(
                       }
                     );
                   } else {
-                    if(!enteredCallback) {
+                    if (!enteredCallback) {
                       enteredCallback = true;
                       // Set the right oldClassNo and newClassNo for reactivating, depending on direction
                       if (!reverseFlag) {
                         // Play animation
-                        anims[newClassNo-1].play();
-                        console.log("Initialize arrows: oldClassNo = " + oldClassNo + ", newClassNo = " + newClassNo);
-                        $(`#${newClass}-arrowLeft-container`).on("click", () => {
-                          console.log("Arrow left clicked");
-                          changeSubmenuAnimation(
-                            oldClassNo,
-                            oldClassNo + 1,
-                            colorScheme,
-                            anims,
-                            indexFlag,
-                            true
-                          );
-                        });
-                        $(`#${newClass}-arrowRight-container`).on("click", () => {
-                          changeSubmenuAnimation(
-                            oldClassNo + 1,
-                            newClassNo + 1,
-                            colorScheme,
-                            anims,
-                            false,
-                            false
-                          );
-                        });
+                        anims[newClassNo - 1].play();
+                        console.log(
+                          "Initialize arrows: oldClassNo = " +
+                            oldClassNo +
+                            ", newClassNo = " +
+                            newClassNo
+                        );
+                        console.log(
+                          "Initialize arrows: oldClass = " +
+                            oldClass +
+                            ", newClass = " +
+                            newClass
+                        );
+                        $(`#${newClass}-arrowLeft-container`).on(
+                          "click",
+                          () => {
+                            console.log("Arrow left clicked");
+                            changeSubmenuAnimation(
+                              oldClassNo,
+                              oldClassNo + 1,
+                              colorScheme,
+                              anims,
+                              indexFlag,
+                              true
+                            );
+                          }
+                        );
+                        $(`#${newClass}-arrowRight-container`).on(
+                          "click",
+                          () => {
+                            changeSubmenuAnimation(
+                              oldClassNo + 1,
+                              newClassNo + 1,
+                              colorScheme,
+                              anims,
+                              false,
+                              false
+                            );
+                          }
+                        );
                       } else {
-                        anims[oldClassNo-1].play();
-                        $(`#${oldClass}-arrowLeft-container`).on("click", () => {
-                          changeSubmenuAnimation(
-                            oldClassNo,
-                            newClassNo,
-                            colorScheme,
-                            anims,
-                            indexFlag,
-                            true
+                        // If new class is 1st page && reverse==true, set indexFlag to true
+                        if (newClass == "GC1") {
+                          indexFlag = true;
+                        }
+                        // Reset opacity of content (fade in)
+                        if (!indexFlag) {
+                          console.log("Resetting opacity to 1 of " + newClass);
+                          $(`.${newClass}`).animate(
+                            {
+                              opacity: "+=1",
+                            },
+                            {
+                              duration: 500,
+                            }
                           );
-                        });
-                        $(`#${oldClass}-arrowRight-container`).on("click", () => {
-                          changeSubmenuAnimation(
-                            newClassNo,
-                            newClassNo + 1,
-                            colorScheme,
-                            anims,
-                            false,
-                            false
-                          );
-                        });
+                        }
+                        console.log(
+                          "Initialize reverse: oldClassNo = " +
+                            oldClassNo +
+                            ", newClassNo = " +
+                            newClassNo
+                        );
+                        console.log(
+                          "Initialize reverse: oldClass = " +
+                            oldClass +
+                            ", newClass = " +
+                            newClass
+                        );
+                        if (oldClassNo != 0) {
+                          // Only play anim if not switched to index page
+                          anims[oldClassNo - 1].play();
+                        }
+                        $(`#${newClass}-arrowLeft-container`).on(
+                          "click",
+                          () => {
+                            changeSubmenuAnimation(
+                              oldClassNo - 1,
+                              oldClassNo,
+                              colorScheme,
+                              anims,
+                              indexFlag,
+                              true
+                            );
+                          }
+                        );
+                        $(`#${newClass}-arrowRight-container`).on(
+                          "click",
+                          () => {
+                            changeSubmenuAnimation(
+                              oldClassNo,
+                              newClassNo,
+                              colorScheme,
+                              anims,
+                              false,
+                              false
+                            );
+                          }
+                        );
                       }
                       $(`#${newClass}-arrowLeft`).animate(
                         {
@@ -458,8 +577,6 @@ function changeSubmenuAnimation(
     }
   );
 }
-
-
 
 /* -------------------------------------------------------------------------------
 ------------------------------------ EXPORT --------------------------------------

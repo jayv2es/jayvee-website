@@ -22,10 +22,10 @@
   justify-content: left;
   align-items: center;
   position: relative;
+  z-index: 10;
 }
 .arrowLeft {
   height: 75%;
-  z-index: 2;
   transform: scaleX(-1);
   opacity: 0; /* Animated in functions.js */
 }
@@ -37,10 +37,10 @@
   justify-content: right;
   align-items: center;
   position: relative;
+  z-index: 10;
 }
 .arrowRight {
   height: 75%;
-  z-index: 2;
   opacity: 0; /* Animated in functions.js */
 }
 
@@ -54,6 +54,7 @@ div.explore {
   display: flex;
   flex-direction: row-reverse;
   position: relative;
+  z-index: 10;
 }
 
 .exploreArrowDiv {
