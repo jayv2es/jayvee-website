@@ -27,7 +27,6 @@ function initializeLottieAnimation(classNo, colorScheme) {
     svgAnim.style.margin = "0";
     svgAnim.style.display = "flex";
     svgAnim.style.justifyContent = "left";
-    svgAnim.style.transform = "translateX(-2%)";
     // Exctract grid height and aspect ratio of svg
     var aspectRatio =
       svgAnim.getAttribute("width") / svgAnim.getAttribute("height");
@@ -135,17 +134,19 @@ function changeSubmenuAnimation(
         complete: () => {},
       }
     );
-    // Fade out current content before playing animation
-    $(`.${oldClass}`).animate(
-      {
-        opacity: "-=1",
-      },
-      {
-        duration: animTimeLogo / 3,
-        easing: "swing",
-        complete: () => {},
-      }
-    );
+    // If forward, fade out current content before playing animation
+    if(!reverseFlag) {
+      $(`.${oldClass}`).animate(
+        {
+          opacity: "-=1",
+        },
+        {
+          duration: animTimeLogo / 3,
+          easing: "swing",
+          complete: () => {},
+        }
+      );
+    };
   }
 
   // 1. Move logo out of screen
@@ -192,6 +193,7 @@ function changeSubmenuAnimation(
   // Define a flag that tracks if the progress of the movingbar animation has been tracked already above 0.5
   // This needs to be tracked for starting the following animation as soon as the movingbar has reached the right end of screen.
   var firstProgRead = true;
+  var secondProgRead = true;
   // Movingbar animation
   $("#movingbar").animate(
     {
@@ -204,6 +206,21 @@ function changeSubmenuAnimation(
         // 2. As soon as logo halfway through movement:
         // Place new contents out of screen, so they can be moved in along with other animation
         // -------------------------------------------
+        // Once progress above 0.7 in reverse animation, fade in again
+        console.log(indexFlag);
+        console.log(reverseFlag);
+        console.log((prog > 0.7));
+        console.log(secondProgRead);
+        if(!indexFlag && reverseFlag && (prog > 0.7) && secondProgRead) {
+          secondProgRead = false;
+          $(`.${newClass}`).animate({
+            opacity: "+=1"
+          },{
+            duration: animTimeLogo/2,
+            easing: "swing",
+            complete: () => {}
+          });
+        }        
         if (prog >= 0.5 && firstProgRead) {
           // Change background colors (with alpha=0.5)
           linearlyChangeRGB(
@@ -225,31 +242,12 @@ function changeSubmenuAnimation(
           );
           // Reset opacity of arrows
           if (!(indexFlag && reverseFlag)) {
-            $(`#${newClass}-arrowLeft`).animate(
-              {
-                opacity: "-=0.1",
-              },
-              {
-                duration: 0,
-              }
-            );
-            $(`#${newClass}-arrowRight`).animate(
-              {
-                opacity: "-=0.1",
-              },
-              {
-                duration: 0,
-              }
-            );
+            $(`#${newClass}-arrowLeft`).css("opacity", 0);
+            $(`#${newClass}-arrowRight`).css("opacity", 0);
           }
           // Set opacity of content to zero if reverse and not index
-          if (!indexFlag) {
-            if (reverseFlag) {
-              console.log("Resetting opacity of " + newClass);
-              $(`.${newClass}`).css("opacity", "0");
-            } else {
-              $(`.${newClass}`).css("opacity", "1");
-            }
+          if (!indexFlag && reverseFlag) {
+            $(`.${newClass}`).css("opacity", "0");
           }
           // ...except for explore-Button if necessary.
           if (indexFlag && reverseFlag) {
@@ -263,6 +261,10 @@ function changeSubmenuAnimation(
             );
           }
           $(`.${newClass}`).show();
+          // If forward, reset opacity of GC to 1 
+          if(!reverseFlag) {
+            $(`.${newClass}`).css("opacity", 1);
+          }
           // 3. Move content to the opposite side along with logo,
           //    so it looks like the observer moves to the right
           // -------------------------------------------
@@ -299,6 +301,7 @@ function changeSubmenuAnimation(
           // Define flag to avoid loops in complete-callback
           // DEBUG measure: For some reason loops through the callback
           let enteredCallback = false;
+          // Move old contents out of screen
           $(`.${oldClass}`).animate(
             {
               left: `-=${amountToMove_contents}px`,
@@ -462,7 +465,6 @@ function changeSubmenuAnimation(
                         $(`#${newClass}-arrowLeft-container`).on(
                           "click",
                           () => {
-                            console.log("Arrow left clicked");
                             changeSubmenuAnimation(
                               oldClassNo,
                               oldClassNo + 1,
@@ -491,18 +493,7 @@ function changeSubmenuAnimation(
                         if (newClass == "GC1") {
                           indexFlag = true;
                         }
-                        // Reset opacity of content (fade in)
-                        if (!indexFlag) {
-                          console.log("Resetting opacity to 1 of " + newClass);
-                          $(`.${newClass}`).animate(
-                            {
-                              opacity: "+=1",
-                            },
-                            {
-                              duration: 500,
-                            }
-                          );
-                        }
+                        
                         console.log(
                           "Initialize reverse: oldClassNo = " +
                             oldClassNo +
