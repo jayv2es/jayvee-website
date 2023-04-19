@@ -89,9 +89,17 @@ function changeSubmenuAnimation(
   if (reverseFlag) {
     $(`#${newClass}-arrowLeft-container`).off("click");
     $(`#${newClass}-arrowRight-container`).off("click");
+    $(`#${newClass}-iconButton-R1`).off("click");
+    $(`#${newClass}-iconButton-R2`).off("click");
+    $(`#${newClass}-iconButton-R3`).off("click");
+    $(`#${newClass}-iconButton-L1`).off("click");
   } else {
     $(`#${oldClass}-arrowLeft-container`).off("click");
     $(`#${oldClass}-arrowRight-container`).off("click");
+    $(`#${oldClass}-iconButton-R1`).off("click");
+    $(`#${oldClass}-iconButton-R2`).off("click");
+    $(`#${oldClass}-iconButton-R3`).off("click");
+    $(`#${oldClass}-iconButton-L1`).off("click");
   }
   // 0. Fade out explore button (if index) or arrow buttons (if other)
   if (reverseFlag) {
@@ -113,8 +121,10 @@ function changeSubmenuAnimation(
       }
     );
   } else {
-    // Fade out arrows
-    $(`#${oldClass}-arrowLeft`).animate(
+    // Fade out arrows and buttons
+    $(
+      `#${oldClass}-arrowLeft, #${oldClass}-arrowRight, #${oldClass}-iconButton-R1, #${oldClass}-iconButton-R2, #${oldClass}-iconButton-R3, #${oldClass}-iconButton-L1`
+    ).animate(
       {
         opacity: "-=0.1",
       },
@@ -124,18 +134,9 @@ function changeSubmenuAnimation(
         complete: () => {},
       }
     );
-    $(`#${oldClass}-arrowRight`).animate(
-      {
-        opacity: "-=0.1",
-      },
-      {
-        duration: animTimeLogo / 4,
-        easing: "swing",
-        complete: () => {},
-      }
-    );
+
     // If forward, fade out current content before playing animation
-    if(!reverseFlag) {
+    if (!reverseFlag) {
       $(`.${oldClass}`).animate(
         {
           opacity: "-=1",
@@ -146,7 +147,7 @@ function changeSubmenuAnimation(
           complete: () => {},
         }
       );
-    };
+    }
   }
 
   // 1. Move logo out of screen
@@ -207,20 +208,19 @@ function changeSubmenuAnimation(
         // Place new contents out of screen, so they can be moved in along with other animation
         // -------------------------------------------
         // Once progress above 0.7 in reverse animation, fade in again
-        console.log(indexFlag);
-        console.log(reverseFlag);
-        console.log((prog > 0.7));
-        console.log(secondProgRead);
-        if(!indexFlag && reverseFlag && (prog > 0.7) && secondProgRead) {
+        if (!indexFlag && reverseFlag && prog > 0.7 && secondProgRead) {
           secondProgRead = false;
-          $(`.${newClass}`).animate({
-            opacity: "+=1"
-          },{
-            duration: animTimeLogo/2,
-            easing: "swing",
-            complete: () => {}
-          });
-        }        
+          $(`.${newClass}`).animate(
+            {
+              opacity: "+=1",
+            },
+            {
+              duration: animTimeLogo / 2,
+              easing: "swing",
+              complete: () => {},
+            }
+          );
+        }
         if (prog >= 0.5 && firstProgRead) {
           // Change background colors (with alpha=0.5)
           linearlyChangeRGB(
@@ -242,8 +242,9 @@ function changeSubmenuAnimation(
           );
           // Reset opacity of arrows
           if (!(indexFlag && reverseFlag)) {
-            $(`#${newClass}-arrowLeft`).css("opacity", 0);
-            $(`#${newClass}-arrowRight`).css("opacity", 0);
+            $(
+              `#${newClass}-arrowLeft, #${newClass}-arrowRight, #${newClass}-iconButton-R1, #${newClass}-iconButton-R2, #${newClass}-iconButton-R3, #${newClass}-iconButton-L1`
+            ).css("opacity", "0");
           }
           // Set opacity of content to zero if reverse and not index
           if (!indexFlag && reverseFlag) {
@@ -261,8 +262,8 @@ function changeSubmenuAnimation(
             );
           }
           $(`.${newClass}`).show();
-          // If forward, reset opacity of GC to 1 
-          if(!reverseFlag) {
+          // If forward, reset opacity of GC to 1
+          if (!reverseFlag) {
             $(`.${newClass}`).css("opacity", 1);
           }
           // 3. Move content to the opposite side along with logo,
@@ -450,18 +451,6 @@ function changeSubmenuAnimation(
                       if (!reverseFlag) {
                         // Play animation
                         anims[newClassNo - 1].play();
-                        console.log(
-                          "Initialize arrows: oldClassNo = " +
-                            oldClassNo +
-                            ", newClassNo = " +
-                            newClassNo
-                        );
-                        console.log(
-                          "Initialize arrows: oldClass = " +
-                            oldClass +
-                            ", newClass = " +
-                            newClass
-                        );
                         $(`#${newClass}-arrowLeft-container`).on(
                           "click",
                           () => {
@@ -493,19 +482,6 @@ function changeSubmenuAnimation(
                         if (newClass == "GC1") {
                           indexFlag = true;
                         }
-                        
-                        console.log(
-                          "Initialize reverse: oldClassNo = " +
-                            oldClassNo +
-                            ", newClassNo = " +
-                            newClassNo
-                        );
-                        console.log(
-                          "Initialize reverse: oldClass = " +
-                            oldClass +
-                            ", newClass = " +
-                            newClass
-                        );
                         if (oldClassNo != 0) {
                           // Only play anim if not switched to index page
                           anims[oldClassNo - 1].play();
@@ -537,17 +513,9 @@ function changeSubmenuAnimation(
                           }
                         );
                       }
-                      $(`#${newClass}-arrowLeft`).animate(
-                        {
-                          opacity: "+=0.1",
-                        },
-                        {
-                          duration: 500,
-                          easing: "swing",
-                          complete: () => {},
-                        }
-                      );
-                      $(`#${newClass}-arrowRight`).animate(
+                      $(
+                        `#${newClass}-arrowLeft, #${newClass}-arrowRight, #${newClass}-iconButton-R1, #${newClass}-iconButton-R2, #${newClass}-iconButton-R3, #${newClass}-iconButton-L1`
+                      ).animate(
                         {
                           opacity: "+=0.1",
                         },

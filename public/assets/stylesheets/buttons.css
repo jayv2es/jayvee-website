@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@1,900&family=Merriweather&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+
+/* --------------------------------------------------------
+----------------------- MENU BUTTONS ---------------------- 
+-------------------------------------------------------- */
+.textButtonContainer {
+  grid-row: 14/15;
+  grid-column: 10/15;
+  height: 100%;
+  z-index: 9;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.textButton {
+  height: 4vh;
+  width: 20vh;
+  min-height: 20px;
+  min-width: 100px;
+  border: max(0.5vh, 2px) solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  transform: translateY(60%);
+  margin-right: max(2vh, 10px);
+}
+.textButtonText {
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0;
+  text-align: center;
+}
+
+/* --------------------------------------------------------
+----------------------- ICON BUTTONS ---------------------- 
+-------------------------------------------------------- */
+.iconButtonLeft {
+  grid-row: 4/5;
+  grid-column: 4/5;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.iconButtonRight {
+  grid-row: 4/5;
+  grid-column: 12/17;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.iconButton {
+  height: 4vh;
+  width: 4vh;
+  min-height: 20px;
+  min-width: 20px;
+  border-radius: 1000px; /* Make "infinite" for circles */
+  border: max(0.2vh, 1px) solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  transform: translateY(60%);
+  opacity: 0; /* Animated in functions.js */
+}
+.iBR1,
+.iBR2 {
+  margin-right: max(2vh, 10px);
+}
