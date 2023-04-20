@@ -392,13 +392,14 @@
                             
         </div>
         <script>
-            // NOTE (20.04.23 - 09:30)
-            // Encode all switches into binary for cookie, e.g. "options=101" where first digit is Light/Dark mode, second digit is EN/DE, etc.
-            
             // Prepare animation
             var xStart = window.innerWidth/4;
             window.firstLoadIndexAnimation(reverseFlag=true);
             document.addEventListener('DOMContentLoaded',  async function () {
+                // Encode light/dark mode: 0 = Light; 1 = Dark
+                await window.setCookie("optionsColorscheme","0",1,true);
+                // Encode language: 0 = English; 1 = German
+                await window.setCookie("optionsLanguage","0",1,true);
                 // Initialize grouped classes CSS
                 $('.GC0').show();
                 $('.GC1').hide();
@@ -408,7 +409,7 @@
                 // Load color scheme
                 const colorsJSON = await $.getJSON('/public/assets/json/colorscheme.json');
                 // Initialize color theme and save to current color scheme
-                var colors = window.loadColorTheme(colorsJSON, "Light");
+                var colors = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
                 window.initializeCSSColorTheme(colors);
                 // Load lottie animations using dynamic variable assignments
                 var anims = [];
@@ -445,17 +446,16 @@
                 lottieAnim2.addEventListener("DOMLoaded", async () => {
                 lottieAnim3.addEventListener("DOMLoaded", async () => {
                 lottieAnim4.addEventListener("DOMLoaded", async () => {
-                    initializeLottieAnimation(1, colors);
-                    initializeLottieAnimation(2, colors);
-                    initializeLottieAnimation(3, colors);
-                    initializeLottieAnimation(4, colors);
+                    initializeLottieAnimation(1, colorsJSON);
+                    initializeLottieAnimation(2, colorsJSON);
+                    initializeLottieAnimation(3, colorsJSON);
+                    initializeLottieAnimation(4, colorsJSON);
                     anims.push(lottieAnim1, lottieAnim2, lottieAnim3, lottieAnim4);
                     console.log(anims);           
 
                     /* ----------------------------------------------------------------------
                     ------------------- LOADING SCREEN CODE STARTS HERE ---------------------
                     ---------------------------------------------------------------------- */ 
-
                     // Get the total number of resources on the page
                     var totalResources = $('*');
                     // Set the initial number of resources loaded to 0
@@ -485,44 +485,44 @@
                                 // -----------------------------------------------------------------------
                                 // -----------------------------------------------------------------------
                                 $('#h2menu0').mouseenter(() => {
-                                    window.hoverMenupoint(0, 500, colors, reverseFlag=false);
+                                    window.hoverMenupoint(0, 500, colorsJSON, reverseFlag=false);
                                 });
                                 $('#h2menu0').click(() => {
                                     // Click interaction code HERE
                                     // !!! ALSO UPDATE IN "changeSubmenuAnimation" FUNCTION CODE IN functions.js
                                 });
                                 $('#h2menu0').mouseleave(() => {
-                                    window.hoverMenupoint(0, 500, colors, reverseFlag=true);
+                                    window.hoverMenupoint(0, 500, colorsJSON, reverseFlag=true);
                                 });
                                 $('#h2menu1').mouseenter(() => {
-                                    window.hoverMenupoint(1, 500, colors, reverseFlag=false);
+                                    window.hoverMenupoint(1, 500, colorsJSON, reverseFlag=false);
                                 });
                                 $('#h2menu1').click(() => {
                                     // Click interaction code HERE
                                     // !!! ALSO UPDATE IN "changeSubmenuAnimation" FUNCTION CODE IN functions.js
                                 });
                                 $('#h2menu1').mouseleave(() => {
-                                    window.hoverMenupoint(1, 500, colors, reverseFlag=true);
+                                    window.hoverMenupoint(1, 500, colorsJSON, reverseFlag=true);
                                 });
                                 $('#h2menu2').mouseenter(() => {
-                                    window.hoverMenupoint(2, 500, colors, reverseFlag=false);
+                                    window.hoverMenupoint(2, 500, colorsJSON, reverseFlag=false);
                                 });
                                 $('#h2menu2').click(() => {
                                     // Click interaction code HERE
                                     // !!! ALSO UPDATE IN "changeSubmenuAnimation" FUNCTION CODE IN functions.js
                                 });
                                 $('#h2menu2').mouseleave(() => {
-                                    window.hoverMenupoint(2, 500, colors, reverseFlag=true);
+                                    window.hoverMenupoint(2, 500, colorsJSON, reverseFlag=true);
                                 });
                                 $('#h2menu3').mouseenter(() => {
-                                    window.hoverMenupoint(3, 500, colors, reverseFlag=false);
+                                    window.hoverMenupoint(3, 500, colorsJSON, reverseFlag=false);
                                 });
                                 $('#h2menu3').click(() => {
                                     // Click interaction code HERE
                                     // !!! ALSO UPDATE IN "changeSubmenuAnimation" FUNCTION CODE IN functions.js
                                 });
                                 $('#h2menu3').mouseleave(() => {
-                                    window.hoverMenupoint(3, 500, colors, reverseFlag=true);
+                                    window.hoverMenupoint(3, 500, colorsJSON, reverseFlag=true);
                                 });
 
                                 // EXPLORE ANIMATIONS
@@ -531,13 +531,13 @@
                                 const initialFontWeight = parseInt($(".exploreText").css("font-weight"));
                                 const initialStrokeWidth = parseInt($(".exploreArrowPolygon").css("stroke-width"));
                                 $('#explore').mouseenter(() => {
-                                    window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=false);
+                                    window.hoverExplore(250, colorsJSON, initialFontWeight, initialStrokeWidth, reverseFlag=false);
                                 });
                                 $('#explore').click(() => {
-                                    window.changeSubmenuAnimation(0, 1, colors, anims, true, false);
+                                    window.changeSubmenuAnimation(0, 1, colorsJSON, anims, true, false);
                                 });
                                 $('#explore').mouseleave(() => {
-                                    window.hoverExplore(250, colors, initialFontWeight, initialStrokeWidth, reverseFlag=true);
+                                    window.hoverExplore(250, colorsJSON, initialFontWeight, initialStrokeWidth, reverseFlag=true);
                                 });
 
                                 // ARROW ANIMATIONS (on("click")-INTERACTIONS DEFINED RECURSIVELY IN changeSubmenuAnimation)
@@ -545,186 +545,138 @@
                                 // -----------------------------------------------------------------------
                                 const initialStrokeWidthArrow = parseInt($(".arrowLeftPolygon").css("stroke-width"));
                                 $('#GC1-arrowRight-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=false);
                                 });
                                 $('#GC1-arrowRight-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=true);
                                 });
                                 $('#GC1-arrowLeft-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=false);
                                 });
                                 $('#GC1-arrowLeft-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=true);
                                 });
                                 $('#GC2-arrowRight-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=false);
                                 });
                                 $('#GC2-arrowRight-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=true);
                                 });
                                 $('#GC2-arrowLeft-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=false);
                                 });
                                 $('#GC2-arrowLeft-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=true);
                                 });
                                 $('#GC3-arrowRight-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=false);
                                 });
                                 $('#GC3-arrowRight-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=true);
                                 });
                                 $('#GC3-arrowLeft-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=false);
                                 });
                                 $('#GC3-arrowLeft-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=true);
                                 });
                                 $('#GC4-arrowRight-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=false);
                                 });
                                 $('#GC4-arrowRight-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Right", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Right", reverseFlag=true);
                                 });
                                 $('#GC4-arrowLeft-container').mouseenter(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=false);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=false);
                                 });
                                 $('#GC4-arrowLeft-container').mouseleave(() => {
-                                    window.hoverArrow(250, colors, initialStrokeWidthArrow, "Left", reverseFlag=true);
+                                    window.hoverArrow(250, colorsJSON, initialStrokeWidthArrow, "Left", reverseFlag=true);
                                 });
-
-                                // OPTION BOXES ANIMATIONS
-                                // -----------------------------------------------------------------------
-                                // -----------------------------------------------------------------------
-                                const initialFlexBasis = 3.5;         // Value of flex basis as set in CSS in vh => Gets converted to px inside function arguments
-
-                                $('#bO5').mouseenter(() => {
-                                    // Reset all ongoing animations of selection boxes other than this
-                                    for(var i=0; i<=$('.butOptions').children().length-1; i++) {
-                                        if(i==5) {
-                                            continue
-                                        } else {
-                                            window.resetSelectionBox($(`#bO${i}`), colors, initialFlexBasis*$(window).height() / 100);
-                                        }
-                                    };
-                                    // Then expand this selection box
-                                    window.expandSelectionBox($('#bO5'), "CUSTOMIZE THEME", "DARK", 17, 300, colors, initialFlexBasis*$(window).height() / 100);
-                                });
-                                $('#bO5').click(() => {
-                                    // Change color scheme
-                                    colors = window.clickThemeChange($('#bO5'), 300, colorsJSON, "Dark", initialFlexBasis*$(window).height() / 100);
-                                    // Initialize additional CSS
-                                    for(let i=0; i<anims.length; i++) {
-                                        initializeLottieAnimation(i+1, colors);
-                                    }
-                                })
-                                $('#bO5').mouseleave(() => {
-                                    window.contractSelectionBox($('#bO5'), 300, colors, initialFlexBasis*$(window).height() / 100);
-                                })
-
-                                $('#bO6').mouseenter(() => {
-                                    // Reset all ongoing animations of selection boxes other than this
-                                    for(var i=0; i<=$('.butOptions').children().length-1; i++) {
-                                        if(i==6) {
-                                            continue
-                                        } else {
-                                            window.resetSelectionBox($(`#bO${i}`), colors, initialFlexBasis*$(window).height() / 100);
-                                        }
-                                    };
-                                    // Then expand this selection box
-                                    window.expandSelectionBox($('#bO6'), "CUSTOMIZE THEME", "LIGHT", 17, 300, colors, initialFlexBasis*$(window).height() / 100);
-                                });
-                                $('#bO6').click(() => {
-                                    // Change color scheme
-                                    colors = window.clickThemeChange($('#bO6'), 300, colorsJSON, "Light", initialFlexBasis*$(window).height() / 100);
-                                    // Initialize additional CSS
-                                    for(let i=0; i<anims.length; i++) {
-                                        initializeLottieAnimation(i+1, colors);
-                                    }
-                                })
-                                $('#bO6').mouseleave(() => {
-                                    window.contractSelectionBox($('#bO6'), 300, colors, initialFlexBasis*$(window).height() / 100);
-                                })
 
                                 // BUTTON INTERACTIONS
                                 // -----------------------------------------------------------------------
                                 // -----------------------------------------------------------------------
                                 $('#GC1-button-1').mouseenter(() => {
-                                    window.hoverTextButton($('#GC1-button-1'), colors, false);
+                                    window.hoverTextButton($('#GC1-button-1'), colorsJSON, false);
                                 });
                                 $('#GC1-button-1').mouseleave(() => {
-                                    window.hoverTextButton($('#GC1-button-1'), colors, true);
+                                    window.hoverTextButton($('#GC1-button-1'), colorsJSON, true);
                                 })
                                 $('#GC1-button-2').mouseenter(() => {
-                                    window.hoverTextButton($('#GC1-button-2'), colors, false);
+                                    window.hoverTextButton($('#GC1-button-2'), colorsJSON, false);
                                 });
                                 $('#GC1-button-2').mouseleave(() => {
-                                    window.hoverTextButton($('#GC1-button-2'), colors, true);
+                                    window.hoverTextButton($('#GC1-button-2'), colorsJSON, true);
                                 });
                                 $('#GC1-iconButton-R1').mouseenter(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-R1'), colors, false);
+                                    window.hoverIconButton($('#GC1-iconButton-R1'), colorsJSON, false);
                                 });
-                                var state_iBR1 = false;  // Binary argument
                                 $('#GC1-iconButton-R1').click(() => {
-                                    state_iBR1 = window.switchIconButton($('#GC1-iconButton-R1'), colors);
+                                    // Change the cookie's binary to switch from light to dark mode
+                                    let currColorSchemeBinary = parseInt(window.getCookie("optionsColorscheme"));
+                                    window.setCookie("optionsColorscheme",`${(currColorSchemeBinary+1)%2}`,1,true);
+                                    var colors = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
+                                    // Initialize the new color scheme and switch button icon
+                                    window.initializeCSSColorTheme(colors);
+                                    window.switchIconButton($('#GC1-iconButton-R1'), colorsJSON);
                                 });
                                 $('#GC1-iconButton-R1').mouseleave(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-R1'), colors, true);
+                                    window.hoverIconButton($('#GC1-iconButton-R1'), colorsJSON, true);
                                 });
                                 $('#GC1-iconButton-R2').mouseenter(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-R2'), colors, false);
+                                    window.hoverIconButton($('#GC1-iconButton-R2'), colorsJSON, false);
                                 });
                                 $('#GC1-iconButton-R2').mouseleave(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-R2'), colors, true);
+                                    window.hoverIconButton($('#GC1-iconButton-R2'), colorsJSON, true);
                                 });
                                 $('#GC1-iconButton-R3').mouseenter(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-R3'), colors, false);
+                                    window.hoverIconButton($('#GC1-iconButton-R3'), colorsJSON, false);
                                 });
                                 $('#GC1-iconButton-R3').mouseleave(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-R3'), colors, true);
+                                    window.hoverIconButton($('#GC1-iconButton-R3'), colorsJSON, true);
                                 });
                                 $('#GC1-iconButton-L1').mouseenter(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-L1'), colors, false);
+                                    window.hoverIconButton($('#GC1-iconButton-L1'), colorsJSON, false);
                                 });
                                 $('#GC1-iconButton-L1').mouseleave(() => {
-                                    window.hoverIconButton($('#GC1-iconButton-L1'), colors, true);
+                                    window.hoverIconButton($('#GC1-iconButton-L1'), colorsJSON, true);
                                 });
                                 
                                 $('#GC2-button-1').mouseenter(() => {
-                                    window.hoverTextButton($('#GC2-button-1'), colors, false);
+                                    window.hoverTextButton($('#GC2-button-1'), colorsJSON, false);
                                 });
                                 $('#GC2-button-1').mouseleave(() => {
-                                    window.hoverTextButton($('#GC2-button-1'), colors, true);
+                                    window.hoverTextButton($('#GC2-button-1'), colorsJSON, true);
                                 })
                                 $('#GC2-button-2').mouseenter(() => {
-                                    window.hoverTextButton($('#GC2-button-2'), colors, false);
+                                    window.hoverTextButton($('#GC2-button-2'), colorsJSON, false);
                                 });
                                 $('#GC2-button-2').mouseleave(() => {
-                                    window.hoverTextButton($('#GC2-button-2'), colors, true);
+                                    window.hoverTextButton($('#GC2-button-2'), colorsJSON, true);
                                 });
                                 $('#GC3-button-1').mouseenter(() => {
-                                    window.hoverTextButton($('#GC3-button-1'), colors, false);
+                                    window.hoverTextButton($('#GC3-button-1'), colorsJSON, false);
                                 });
                                 $('#GC3-button-1').mouseleave(() => {
-                                    window.hoverTextButton($('#GC3-button-1'), colors, true);
+                                    window.hoverTextButton($('#GC3-button-1'), colorsJSON, true);
                                 })
                                 $('#GC3-button-2').mouseenter(() => {
-                                    window.hoverTextButton($('#GC3-button-2'), colors, false);
+                                    window.hoverTextButton($('#GC3-button-2'), colorsJSON, false);
                                 });
                                 $('#GC3-button-2').mouseleave(() => {
-                                    window.hoverTextButton($('#GC3-button-2'), colors, true);
+                                    window.hoverTextButton($('#GC3-button-2'), colorsJSON, true);
                                 });
                                 $('#GC4-button-1').mouseenter(() => {
-                                    window.hoverTextButton($('#GC4-button-1'), colors, false);
+                                    window.hoverTextButton($('#GC4-button-1'), colorsJSON, false);
                                 });
                                 $('#GC4-button-1').mouseleave(() => {
-                                    window.hoverTextButton($('#GC4-button-1'), colors, true);
+                                    window.hoverTextButton($('#GC4-button-1'), colorsJSON, true);
                                 })
                                 $('#GC4-button-2').mouseenter(() => {
-                                    window.hoverTextButton($('#GC4-button-2'), colors, false);
+                                    window.hoverTextButton($('#GC4-button-2'), colorsJSON, false);
                                 });
                                 $('#GC4-button-2').mouseleave(() => {
-                                    window.hoverTextButton($('#GC4-button-2'), colors, true);
+                                    window.hoverTextButton($('#GC4-button-2'), colorsJSON, true);
                                 });
                                 
 
