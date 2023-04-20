@@ -1,12 +1,12 @@
 /* -------------------------------------------------------------------------------
 ---------------------------- PAGE SWITCH FUNCTIONS -------------------------------
 ------------------------------------------------------------------------------- */
-function initializeLottieAnimation(classNo, colorScheme) {
+function initializeLottieAnimation(classNo, colorsJSON) {
   /*  
   Params:   classNo:          The (additional) class of ALL elements that belong to the menu/content that will be faded out
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
                               --> Parameter: INTEGER (e.g. "0" for Grouped Class "GC0")
-            colorScheme:      The in EJS selected/generated color scheme
+            colorsJSON:       The colorsJSON file loaded on the index page
   Flags:                      -
   Action:                     Initializes a lottie animation of a given GC in the desired color scheme
   Returns:                    -
@@ -17,6 +17,7 @@ function initializeLottieAnimation(classNo, colorScheme) {
           This CAN'T be done by simply adding a .cl = ".divAnimationFill" to the JS code (tried).
   */
   // Change colors of animation
+  colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   $(".divAnimationFill").css(
     "fill",
     `rgb(${colorScheme[1][0]},${colorScheme[1][1]},${colorScheme[1][2]})`
@@ -54,10 +55,10 @@ function initializeLottieAnimation(classNo, colorScheme) {
   }
 }
 
-function changeSubmenuAnimation(
+async function changeSubmenuAnimation(
   oldClassNo,
   newClassNo,
-  colorScheme,
+  colorsJSON,
   anims,
   indexFlag,
   reverseFlag = false
@@ -69,7 +70,7 @@ function changeSubmenuAnimation(
             newClassNo:         The (additional) class of ALL elements that belong to the menu/content that will be faded in
                               --> NEEDS TO BE SET-UP FOR ALL ELEMENTS IN THE HTML
                               --> Parameter: INTEGER (e.g. "1" for Grouped Class "GC1")
-            colorScheme:      The in EJS selected/generated color scheme
+            colorsJSON:       The colorsJSON file loaded on the index page
             anims:            Array of the lottie animation objects, i.e. [lottieAnim1, ..., lottieAnim4]
   Flags:    indexFlag:        If true, adapts animation for the transition INDEX -> SUBMENU (or vice versa if reverseFlag = true)
             reverseFlag:   If false:   Anim direction: Left -> Right
@@ -77,6 +78,8 @@ function changeSubmenuAnimation(
   Action:                     Plays the animation required to change submenus
   Returns:                    -
   */
+  // Load current color scheme
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   // Assign class names to integers
   var oldClass = `GC${oldClassNo}`;
   var newClass = `GC${newClassNo}`;
@@ -358,7 +361,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               0,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = false)
                             );
                           });
@@ -369,7 +372,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               0,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = true)
                             );
                           });
@@ -377,7 +380,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               1,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = false)
                             );
                           });
@@ -388,7 +391,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               1,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = true)
                             );
                           });
@@ -396,7 +399,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               2,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = false)
                             );
                           });
@@ -407,7 +410,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               2,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = true)
                             );
                           });
@@ -415,7 +418,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               3,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = false)
                             );
                           });
@@ -426,7 +429,7 @@ function changeSubmenuAnimation(
                             hoverMenupoint(
                               3,
                               500,
-                              colorScheme,
+                              colorsJSON,
                               (reverseFlag = true)
                             );
                           });
@@ -435,7 +438,7 @@ function changeSubmenuAnimation(
                             changeSubmenuAnimation(
                               0,
                               1,
-                              colorScheme,
+                              colorsJSON,
                               anims,
                               true,
                               false
@@ -457,7 +460,7 @@ function changeSubmenuAnimation(
                             changeSubmenuAnimation(
                               oldClassNo,
                               oldClassNo + 1,
-                              colorScheme,
+                              colorsJSON,
                               anims,
                               indexFlag,
                               true
@@ -470,7 +473,7 @@ function changeSubmenuAnimation(
                             changeSubmenuAnimation(
                               oldClassNo + 1,
                               newClassNo + 1,
-                              colorScheme,
+                              colorsJSON,
                               anims,
                               false,
                               false
@@ -492,7 +495,7 @@ function changeSubmenuAnimation(
                             changeSubmenuAnimation(
                               oldClassNo - 1,
                               oldClassNo,
-                              colorScheme,
+                              colorsJSON,
                               anims,
                               indexFlag,
                               true
@@ -505,7 +508,7 @@ function changeSubmenuAnimation(
                             changeSubmenuAnimation(
                               oldClassNo,
                               newClassNo,
-                              colorScheme,
+                              colorsJSON,
                               anims,
                               false,
                               false

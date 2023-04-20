@@ -53,13 +53,10 @@ function RGBAtoRGB(rgb, alpha, backgroundRGB) {
 }
 
 // Loads a desired color scheme template given the colorscheme.json file
-function loadColorTheme(colorsJSON, theme) {
+function loadColorTheme(colorsJSON, index) {
   // colorsJSON needs to be in a data format, i.e. loaded using "getJSON" and called in the callback function of "getJSON"
-  // theme (string) describing the position of the theme (e.g. "Default") as indicated in colorscheme.json
-  var thisThemeIndex = colorsJSON.findIndex(
-    (lookedUpTheme) => lookedUpTheme.themeName === theme
-  );
-  var thisTheme = colorsJSON[thisThemeIndex];
+  // index is either 0 (light) or 1 (dark)
+  var thisTheme = colorsJSON[index];
   // Define an empty array to store RGB values
   var thisThemeArr = Object.values(thisTheme).slice(
     2,
@@ -102,6 +99,11 @@ function initializeCSSColorTheme(colorSchemeRGB) {
   $(".arrowLeftPolygon").css("stroke", colorSchemeHEX[1]);
   $(".arrowRightPolygon").css("fill", colorSchemeHEX[1]);
   $(".arrowRightPolygon").css("stroke", colorSchemeHEX[1]);
+
+  $(".divAnimationFill").css(
+    "fill",
+    `rgb(${colorSchemeRGB[1][0]},${colorSchemeRGB[1][1]},${colorSchemeRGB[1][2]})`
+  );
 }
 
 function linearlyChangeRGB(

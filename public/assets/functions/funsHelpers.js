@@ -19,11 +19,15 @@ const writeFileCallback = (err) => {
 };
 
 // Stores name-value pair as cookie (expires after exdays)
-function setCookie(cname, cvalue, exdays) {
+function setCookie(cname, cvalue, exdays, samesite) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   let expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  if(samesite) {
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=None;Secure";
+  } else {
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }  
 }
 
 // Retrieves value from name-value pair of cookie

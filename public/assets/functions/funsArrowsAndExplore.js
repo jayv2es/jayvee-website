@@ -4,20 +4,21 @@
 
 function hoverExplore(
   animTime,
-  colorScheme,
+  colorsJSON,
   initialFontWeight,
   initialStrokeWidth,
   reverseFlag = false
 ) {
   /*  
     Params:   animTime:             Duration of animation
-              colorScheme:          The in EJS selected/generated color scheme
+              colorsJSON:           colorsJSON from index page
               initialFontWeight:    Current font-weight (const), extracted in EJS code before calling the function.
               initialStrokeWidth:   Current stroke-width (const), extracted in EJS code before calling the function.
     Flags:    reverse:              If true, plays animation backwords (i.e. when mouseleave)
     Action:   Moves "START TOUR" button 1vh to the right and displays bold and clickable, reverses if flag true.
     Returns:  - 
   */
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   $("#explore :animated").stop(true);
   if (!reverseFlag) {
     // Get difference in stroke-width and font-weight to subtract
@@ -104,20 +105,21 @@ function hoverExplore(
 
 function hoverArrow(
   animTime,
-  colorScheme,
+  colorsJSON,
   initialStrokeWidth,
   arrowDirection,
   reverseFlag = false
 ) {
   /*  
     Params:   animTime:             Duration of animation
-              colorScheme:          The in EJS selected/generated color scheme
+              colorsJSON:           ColorsJSON from index page
               initialStrokeWidth:   Current stroke-width (const), extracted in EJS code before calling the function.
               arrowDirection:       "Left" or "Right", depending on which side arrow
     Flags:    reverse:              If true, plays animation backwords (i.e. when mouseleave)
     Action:   Moves "arrows 1vh to the left/right (dep. on arrowDirection) and displays bold and clickable, reverses if flag true.
     Returns:  - 
   */
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   $(".arrows :animated").stop(true);
   if (!reverseFlag) {
     // Get difference in stroke-width and font-weight to subtract

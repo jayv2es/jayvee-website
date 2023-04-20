@@ -168,75 +168,17 @@ function firstLoadIndexAnimation(reverseFlag) {
   }
 }
 
-function clickThemeChange(
-  element,
-  animTime,
-  colorsJSON,
-  colorTheme,
-  initialFlexBasis
-) {
-  /*
-  Params:   element:          jQuery-object of the selection box' div, e.g. "$('#selectionDiv')".
-                              IMPORTANT: HTML of element needs to be structured like:
-                              <div>...<svg>...<g>...<path>... with only ONE <g>! 
-                              => Delete all multiple layers, i.e. multiple <g> before the <path>.
-            animTime:         Duration of animation
-            colorsJSON:       The in EJS loaded JSON file containing the color schemes
-            colorTheme:       The name of the color theme, as defined in colorJSON
-            initialFlexBasis: The initial width (flex-basis) of the selection box
-                              => Has to be retrieved in the HTML script
-  Flags:    -
-  Action:                     Changes the color scheme, updates necessary CSS and contracts box again
-  Returns:                    The new color scheme
-  */
-  // Load color scheme from JSON
-  colors = loadColorTheme(colorsJSON, colorTheme);
-  initializeCSSColorTheme(colors);
-  // Manually (needed) update CSS of menupoints and explore button
-  $("#h2menu0").css(
-    "color",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  $("#h2menu1").css(
-    "color",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  $("#h2menu2").css(
-    "color",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  $("#h2menu3").css(
-    "color",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  $("#exploreText").css(
-    "color",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  $("#exploreArrowPolygon").css(
-    "fill",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  $("#exploreArrowPolygon").css(
-    "stroke",
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  // Contract selection box again
-  contractSelectionBox(element, 300, colors, initialFlexBasis);
-  // Return the new scheme
-  return colors;
-}
-
-function hoverMenupoint(elementNo, animTime, colorScheme, reverseFlag = false) {
+function hoverMenupoint(elementNo, animTime, colorsJSON, reverseFlag = false) {
   /*  
     Params:   elementNo:    Number of menupoint to which logo should move (0=left, 3=right)
               animTime:     Duration of animation
-              colorScheme:  The in EJS selected/generated color scheme
+              colorsJSON:   The colorsJSON file from index page
     Flags:    reverse:      If true, plays animation backwords (i.e. when mouseleave)
     Action:   Moves center of logo to center of chosen menupoint and changes color
     Returns:  - 
   */
   // Get element
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   const element = $(`#h2menu${elementNo}`);
   // Start RGB color change
   linearlyChangeRGB(

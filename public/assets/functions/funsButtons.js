@@ -1,17 +1,18 @@
 /* -------------------------------------------------------------------------------
 --------------------------------- TEXT BUTTONS -----------------------------------
 ------------------------------------------------------------------------------- */
-function hoverTextButton(element, colorScheme, reverseFlag = false) {
+function hoverTextButton(element, colorsJSON, reverseFlag = false) {
   /*
   Params:   element:          jQuery-object of the button's div, e.g. "$('#button')".
                               IMPORTANT: HTML of element needs to be structured like:
                               <div>...<svg>...<g>...<path>... with only ONE <g>! 
                               => Delete all multiple layers, i.e. multiple <g> before the <path>.
-            colorScheme:      The in EJS selected/generated color scheme
+            colorsJSON:       colorsJSON from index page
   Flags:    reverse:          If true, plays animation backwords (i.e. when mouseleave)
   Action:                     Switches colors of button and displays cursor as "pointer"
   Returns:  -
   */
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   if (!reverseFlag) {
     element.css("background-color", RGBtoHEX(colorScheme[1]));
     element.css("color", RGBtoHEX(colorScheme[0]));
@@ -30,21 +31,22 @@ function hoverTextButton(element, colorScheme, reverseFlag = false) {
 /* -------------------------------------------------------------------------------
 --------------------------------- ICON BUTTONS -----------------------------------
 ------------------------------------------------------------------------------- */
-function hoverIconButton(element, colorScheme, reverseFlag = false) {
+function hoverIconButton(element, colorsJSON, reverseFlag = false) {
   /*
   Params:   element:          jQuery-object of the button's div, e.g. "$('#button')".
                               IMPORTANT: HTML of element needs to be structured like:
                               <div>...<svg>...<g>...<path>... with only ONE <g>! 
                               => Delete all multiple layers, i.e. multiple <g> before the <path>.
-            colorScheme:      The in EJS selected/generated color scheme
+            colorsJSON:       colorsJSON from index page
   Flags:    reverse:          If true, plays animation backwords (i.e. when mouseleave)
   Action:                     Switches colors of button and displays cursor as "pointer"
   Returns:  -
   */
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   // Get paths of icon
   var svg = element.children("svg");
   var paths = svg.children("g").children("path");
-
+  
   if (!reverseFlag) {
     element.css("background-color", RGBtoHEX(colorScheme[1]));
     paths.each((index, path) => {
@@ -62,17 +64,18 @@ function hoverIconButton(element, colorScheme, reverseFlag = false) {
   }
 }
 
-function switchIconButton(element, colorScheme) {
+function switchIconButton(element, colorsJSON) {
   /*
   Params:   element:          jQuery-object of the button's div, e.g. "$('#button')".
                               IMPORTANT: HTML of element needs to be structured like:
                               <div>...<svg>...<g>...<path>... with only ONE <g>! 
                               => Delete all multiple layers, i.e. multiple <g> before the <path>.
-            colorScheme:      The in EJS selected/generated color scheme
+            colorsJSON:       colorsJSON from index page
   Flags:    -        
   Action:                     Switches the displayed SVG in the button
   Returns:  -     
   */
+  var colorScheme = window.loadColorTheme(colorsJSON, parseInt(window.getCookie("optionsColorscheme")));
   // MAKE SURE THAT THERE ARE TWO SVGS INSIDE THE HTML ELEMENT
   var svgs = element.children("svg");
   var oldSvg = svgs.filter((index) => svgs[index].style.display == "block")[0];
